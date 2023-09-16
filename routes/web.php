@@ -5,6 +5,8 @@ use App\Http\Controllers\ProfileController;
 // use App\Http\Controllers\BackendController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\UserController;
@@ -16,6 +18,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubcategorytController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VariationController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -157,3 +160,15 @@ Route::get('/footer/3/delete/{id}',[FooterController::class ,'footer3_delete'])-
 Route::post('/footer/4',[FooterController::class ,'footer4'])->name('footer4');
 Route::get('/footer/4/{id}',[FooterController::class ,'footer4_delete'])->name('footer4.delete');
 Route::post('/footer/copyright/{id}',[FooterController::class ,'copyright'])->name('copyright');
+
+// Customer
+Route::get('/customer/login',[CustomerAuthController::class ,'customer_login'])->name('customer.login');
+Route::get('/customer/register',[CustomerAuthController::class ,'customer_register'])->name('customer.register');
+Route::post('/customer/store',[CustomerAuthController::class ,'customer_store'])->name('customer.store');
+Route::post('/customer/logged/in',[CustomerAuthController::class ,'customer_logged'])->name('customer.logged');
+
+
+Route::get('/customer/list',[CustomerController::class ,'customer_list'])->name('customer.list');
+Route::get('/customer/profile',[CustomerController::class ,'customer_profile'])->name('customer.profile');
+Route::get('/customer/logout',[CustomerController::class ,'customer_logout'])->name('customer.logout');
+Route::post('/customer/update',[CustomerController::class ,'customer_update'])->name('customer.update');

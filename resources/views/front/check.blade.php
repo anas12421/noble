@@ -74,7 +74,7 @@
                                     @foreach ($available_colors as $color)
 
                                     @if ($color->rel_to_color->color_name == 'NA')
-                                    <li class="color1"><input class="color_id" checked disabled id="color{{$color->color_id}}" type="radio" name="color" value="{{$color->color_id}}">
+                                    <li class="color1"><input class="color_id" checked id="color{{$color->color_id}}" type="radio" name="color" value="{{$color->color_id}}">
                                         <label for="color{{$color->color_id}}" class="bg-dark text-white">NA</label>
                                     </li>
 
@@ -95,7 +95,7 @@
                                 <ul class="size_available">
                                     @foreach ($available_sizes as $size )
 
-                                    <li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input class="size_id" id="size{{$size->size_id}}" type="radio" name="size" value="{{$size->size_id}}">
+                                    <li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input  class="size_id" id="size{{$size->size_id}}" type="radio" name="size" value="{{$size->size_id}}">
                                         <label for="size{{$size->size_id}}">{{$size->rel_to_size->size_name}}</label>
                                     </li>
 
@@ -388,7 +388,7 @@
 
                              success:function(data){
                                 $("#quan").html(data);
-              
+
                              }
                         });
 

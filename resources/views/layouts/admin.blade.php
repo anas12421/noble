@@ -283,6 +283,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{route('customer.list')}}">
+                            <i class="link-icon" data-feather="feather"></i>
+                            <span class="link-title">Customer</span>
+                            {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{route('subscriber')}}">
                             <i class="link-icon" data-feather="feather"></i>
                             <span class="link-title">Subscriber</span>
