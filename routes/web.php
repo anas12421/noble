@@ -4,6 +4,7 @@ use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProfileController;
 // use App\Http\Controllers\BackendController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CustomerController;
@@ -172,3 +173,10 @@ Route::get('/customer/list',[CustomerController::class ,'customer_list'])->name(
 Route::get('/customer/profile',[CustomerController::class ,'customer_profile'])->name('customer.profile');
 Route::get('/customer/logout',[CustomerController::class ,'customer_logout'])->name('customer.logout');
 Route::post('/customer/update',[CustomerController::class ,'customer_update'])->name('customer.update');
+
+
+// Cart
+Route::post('/add/cart',[CartController::class ,'cart'])->name('cart');
+Route::get('/add/cart/remove/{id}',[CartController::class ,'cart_remove'])->name('cart.remove');
+Route::get('/view/cart',[CartController::class ,'view_cart'])->name('view.cart');
+Route::post('/view/cart/update',[CartController::class ,'view_cart_update'])->name('view.cart.update');

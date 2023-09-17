@@ -67,6 +67,20 @@
                         </div>
                         <p>{!!$product_info->short_desp!!}
                         </p>
+
+
+
+
+
+
+
+
+
+
+
+
+                    <form action="{{route('cart')}}" method="POST">
+                        @csrf
                         <div class="product-filter-item color">
                             <div class="color-name">
                                 <span>Color :</span>
@@ -74,13 +88,13 @@
                                     @foreach ($available_colors as $color)
 
                                     @if ($color->rel_to_color->color_name == 'NA')
-                                    <li class="color1"><input class="color_id" checked id="color{{$color->color_id}}" type="radio" name="color" value="{{$color->color_id}}">
+                                    <li class="color1"><input class="color_id" name="color_id" checked id="color{{$color->color_id}}" type="radio" name="color" value="{{$color->color_id}}">
                                         <label for="color{{$color->color_id}}" class="bg-dark text-white">NA</label>
                                     </li>
 
                                     @else
 
-                                    <li title="{{$color->rel_to_color->color_name}}" class="color1"><input class="color_id" id="color{{$color->color_id}}" type="radio" name="color" value="{{$color->color_id}}">
+                                    <li title="{{$color->rel_to_color->color_name}}" class="color1"><input class="color_id" id="color{{$color->color_id}}" type="radio" name="color_id" value="{{$color->color_id}}">
                                         <label for="color{{$color->color_id}}" style="background: {{$color->rel_to_color->color_code}}"></label>
                                     </li>
                                     @endif
@@ -88,6 +102,9 @@
 
                                 </ul>
                             </div>
+                            @error('color_id')
+                            <strong class="text-danger">Color Is Reqired</strong>
+                            @enderror
                         </div>
                         <div class="product-filter-item color filter-size">
                             <div class="color-name">
@@ -95,22 +112,51 @@
                                 <ul class="size_available">
                                     @foreach ($available_sizes as $size )
 
-                                    <li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input  class="size_id" id="size{{$size->size_id}}" type="radio" name="size" value="{{$size->size_id}}">
+                                    <li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input class="size_id" id="size{{$size->size_id}}" type="radio" name="size_id" value="{{$size->size_id}}">
                                         <label for="size{{$size->size_id}}">{{$size->rel_to_size->size_name}}</label>
                                     </li>
-
 
                                     @endforeach
                                 </ul>
                             </div>
+                            @error('size_id')
+                            <strong class="text-danger">Size Is Reqired</strong>
+                            @enderror
                         </div>
                         <div class="pro-single-btn">
                             <div class="quantity cart-plus-minus">
-                                <input class="text-value" type="text" value="1">
+                                <input name="quantity" class="text-value" type="text" value="1">
                             </div>
-                            <a href="#" class="theme-btn-s2">Add to cart</a>
-                            <a href="#" class="wl-btn"><i class="fi flaticon-heart"></i></a>
+
+
+                             @auth('customer')
+                             <button type="submit" class="theme-btn-s2 border-0">Add to cart</button>
+                            @else
+                            <a href="{{route('customer.login')}}" class="theme-btn-s2">Add to cart</a>
+                            @endauth
+
+                             @auth('customer')
+                             <a href="{{route('customer.profile')}}" class="wl-btn"><i class="fi flaticon-heart"></i></a>
+                            @else
+
+                            <a href="{{route('customer.login')}}" class="wl-btn"><i class="fi flaticon-heart"></i></a>
+                            @endauth
                         </div>
+
+                        <input type="hidden" value="{{$product_info->id}}" name="product_id">
+                    </form>
+
+
+
+
+
+
+
+
+
+
+
+
                         <ul class="important-text">
                             <li><span>SKU:</span>FTE569P</li>
                             <li><span>Categories: </span>{{$product_info->rel_to_cat->category_name}}</li>

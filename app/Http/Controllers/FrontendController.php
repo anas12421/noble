@@ -62,12 +62,12 @@ class FrontendController extends Controller
 
         foreach ($sizes as $size){
             if($size->rel_to_size->size_name == 'NA'){
-                $str = '<li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input checked class="size_id" id="size'.$size->size_id.'" type="radio" name="size" value="'.$size->size_id.'">
+                $str = '<li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input  checked class="size_id" id="size'.$size->size_id.'" type="radio" name="size_id"  value="'.$size->size_id.'">
                                 <label for="size'.$size->size_id.'">'.$size->rel_to_size->size_name.'</label>
                           </li>';
             }
             else{
-               $str .= '<li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input class="size_id" id="size'.$size->size_id.'" type="radio" name="size" value="'.$size->size_id.'">
+               $str .= '<li title="{{$size->rel_to_size->size_name}}" style="overflow: hidden" class="color" ><input class="size_id" id="size'.$size->size_id.'" type="radio" name="size_id" value="'.$size->size_id.'">
                <label for="size'.$size->size_id.'">'.$size->rel_to_size->size_name.'</label>
          </li>';
             }
