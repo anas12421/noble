@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Wish;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,20 +11,41 @@ use Illuminate\Support\Facades\Auth;
 class CartController extends Controller
 {
     function cart(Request $request){
-        $request->validate([
-            'color_id'=>'required',
-            'size_id'=>'required',
-        ]);
+        if($request->btn == 1){
+            $request->validate([
+                'color_id'=>'required',
+                'size_id'=>'required',
+            ]);
 
-        Cart::insert([
-            'customer_id'=>Auth::guard('customer')->id(),
-            'product_id'=>$request->product_id,
-            'color_id'=>$request->color_id,
-            'size_id'=>$request->size_id,
-            'quantity'=>$request->quantity,
-            'created_at'=>Carbon::now(),
-        ]);
-        return back();
+            Cart::insert([
+                'customer_id'=>Auth::guard('customer')->id(),
+                'product_id'=>$request->product_id,
+                'color_id'=>$request->color_id,
+                'size_id'=>$request->size_id,
+                'quantity'=>$request->quantity,
+                'created_at'=>Carbon::now(),
+            ]);
+            return back();
+        }
+        else{
+
+            $request->validate([
+                'color_id'=>'required',
+                'size_id'=>'required',
+            ]);
+
+            Wish::insert([
+                'customer_id'=>Auth::guard('customer')->id(),
+                'product_id'=>$request->product_id,
+                'color_id'=>$request->color_id,
+                'size_id'=>$request->size_id,
+                'quantity'=>$request->quantity,
+                'created_at'=>Carbon::now(),
+            ]);
+            return back();
+
+
+        }
     }
 
     function cart_remove($id){
@@ -45,4 +67,8 @@ class CartController extends Controller
        }
        return back();
     }
+
+
+
+
 }

@@ -51,6 +51,11 @@
                                     </thead>
                                     <tbody>
 
+                                        @php
+
+                                            $sub = 0;
+                                        @endphp
+
                                         @foreach ($carts as $cart)
 
                                         <tr class="wishlist-item">
@@ -79,15 +84,15 @@
                                                     </ul>
                                                 </div>
                                             </td>
-                                            <td class="ptice">&#2547;{{$cart->rel_to_product->after_discount}}</td>
-                                            <td class="td-quantity">
-                                                <div class="quantity cart-plus-minus">
-                                                    <input class="text-value" name="quantity[{{$cart->id}}]" type="text" value="{{$cart->quantity}}">
-                                                    <div class="dec qtybutton">-</div>
-                                                    <div class="inc qtybutton">+</div>
+                                            <td class="ptice cartmap">&#2547;{{$cart->rel_to_product->after_discount}}</td>
+                                            <td class="td-quantity cartmap">
+                                                <div class="quantity">
+                                                    <input class="text-value quan" name="quantity[{{$cart->id}}]" type="text" value="{{$cart->quantity}}">
+                                                    <div data-price='{{$cart->rel_to_product->after_discount}}' class="dec qtybutton">-</div>
+                                                    <div data-price='{{$cart->rel_to_product->after_discount}}' class="inc qtybutton">+</div>
                                                 </div>
                                             </td>
-                                            <td class="ptice">&#2547;{{$cart->rel_to_product->after_discount*$cart->quantity}}</td>
+                                            <td class="ptice cartmap">&#2547;{{$cart->rel_to_product->after_discount*$cart->quantity}}</td>
                                             <td class="action">
                                                 <ul>
                                                     <li class="w-btn"><a data-bs-toggle="tooltip"
@@ -98,6 +103,10 @@
                                                 </ul>
                                             </td>
                                         </tr>
+
+                                        @php
+                                            $sub += $cart->rel_to_product->after_discount*$cart->quantity;
+                                        @endphp
                                         @endforeach
 
                                     </tbody>
@@ -121,7 +130,7 @@
                             <h3>Cart Totals</h3>
                             <div class="sub-total">
                                 <h4>Subtotal</h4>
-                                <span>$300.00</span>
+                                <span>&#2547;{{$sub}}</span>
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
@@ -131,7 +140,7 @@
                                 <h4>Total</h4>
                                 <span>$300.00</span>
                             </div>
-                            <a class="theme-btn-s2" href="checkout.html">Proceed To CheckOut</a>
+                            <a class="theme-btn-s2" href="{{route('checkout')}}">Proceed To CheckOut</a>
                         </div>
                     </div>
                 </div>
@@ -249,110 +258,6 @@
     </div>
     <!-- cart-area end -->
 
-    <!-- start of wpo-site-footer-section -->
-    <footer class="wpo-site-footer">
-        <div class="wpo-upper-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="widget about-widget">
-                            <div class="logo widget-title">
-                                <img src="assets/images/logo-2.svg" alt="blog">
-                            </div>
-                            <p>Elit commodo nec urna erat morbi at hac turpis aliquam.
-                                In tristique elit nibh turpis. Lacus volutpat ipsum convallis tellus pellentesque
-                                etiam.</p>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-twitter-alt"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-linkedin"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="ti-instagram"></i>
-                                    </a>
-                                </li>
-                            </ul>
-
-                        </div>
-                    </div>
-                    <div class="col col-lg-3 col-md-6 col-sm-12 col-12">
-                        <div class="widget link-widget">
-                            <div class="widget-title">
-                                <h3>Contact Us</h3>
-                            </div>
-                            <div class="contact-ft">
-                                <ul>
-                                    <li><i class="fi flaticon-mail"></i>themart@gmail.com</li>
-                                    <li><i class="fi flaticon-phone"></i>(208) 555-0112 <br>(704) 555-0127</li>
-                                    <li><i class="fi flaticon-pin"></i>4517 Washington Ave. Manchter,
-                                        Kentucky 495</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-xl-3 col-lg-2 col-md-6 col-sm-12 col-12">
-                        <div class="widget link-widget">
-                            <div class="widget-title">
-                                <h3>Popular</h3>
-                            </div>
-                            <ul>
-                                <li><a href="product.html">Men</a></li>
-                                <li><a href="product.html">Women</a></li>
-                                <li><a href="product.html">Kids</a></li>
-                                <li><a href="product.html">Shoe</a></li>
-                                <li><a href="product.html">Jewelry</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
-                        <div class="widget instagram">
-                            <div class="widget-title">
-                                <h3>Instagram</h3>
-                            </div>
-                            <ul class="d-flex">
-                                <li><a href="project-single.html"><img src="assets/images/instragram/1.jpg"
-                                            alt=""></a></li>
-                                <li><a href="project-single.html"><img src="assets/images/instragram/2.jpg"
-                                            alt=""></a></li>
-                                <li><a href="project-single.html"><img src="assets/images/instragram/4.jpg"
-                                            alt=""></a></li>
-                                <li><a href="project-single.html"><img src="assets/images/instragram/3.jpg"
-                                            alt=""></a></li>
-                                <li><a href="project-single.html"><img src="assets/images/instragram/4.jpg"
-                                            alt=""></a></li>
-                                <li><a href="project-single.html"><img src="assets/images/instragram/1.jpg"
-                                            alt=""></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- end container -->
-        </div>
-        <div class="wpo-lower-footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col col-xs-12">
-                        <p class="copyright"> Copyright &copy; 2023 Themart by <a href="index.html">wpOceans</a>.
-                            All
-                            Rights Reserved.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- end of wpo-site-footer-section -->
 
     <!-- popup-quickview  -->
     <div id="popup-quickview" class="modal fade" tabindex="-1">
@@ -421,4 +326,30 @@
 
 </div>
 <!-- end of page-wrapper -->
+@endsection
+@section('footer_script')
+<script>
+    $(".inc").click(function(){
+        var td =document.getElementsByClassName('cartmap');
+        var array=Array.from(td);
+        array.map((item)=>{
+            item.addEventListener('click',function(cart){
+                if(cart.target.className == 'inc qtybutton'){
+                    var price = cart.target.dataset.price;
+                    var quantity =cart.target.parentElement.firstElementChild.value;
+                    var sub = price*quantity;
+                    var subtotal = item.nextElementSibling.innerHTML =sub;
+
+                }
+
+                if(cart.target.className == 'dec qtybutton'){
+                    var price = cart.target.dataset.price;
+                    var quantity =cart.target.parentElement.firstElementChild.value;
+                    var sub = price*quantity;
+                    var subtotal = item.nextElementSibling.innerHTML =sub;
+                }
+            })
+        });
+    });
+</script>
 @endsection

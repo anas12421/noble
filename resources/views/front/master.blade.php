@@ -20,10 +20,13 @@
     <link href="{{ asset('frontend_assets') }}/css/slick-theme.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/swiper.min.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/owl.transitions.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link href="{{ asset('frontend_assets') }}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/odometer-theme-default.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/sass/style.css" rel="stylesheet">
+    
 </head>
+
 
 <body>
 
@@ -139,53 +142,33 @@
                                     <li>
                                         <div class="header-wishlist-form-wrapper">
                                             <button class="wishlist-toggle-btn"> <i class="fi flaticon-heart"></i>
-                                                <span class="cart-count">3</span></button>
+                                                <span class="cart-count">{{App\Models\Wish::where('customer_id',Auth::guard('customer')->id())->count()}}</span></button>
                                             <div class="mini-wislist-content">
                                                 <button class="mini-cart-close"><i class="ti-close"></i></button>
                                                 <div class="mini-cart-items">
+
+
+                                                    @foreach (App\Models\Wish::where('customer_id', Auth::guard('customer')->id())->get() as $wish )
+
                                                     <div class="mini-cart-item clearfix">
                                                         <div class="mini-cart-item-image">
                                                             <a href="product.html"><img
-                                                                    src="{{ asset('frontend_assets') }}/images/cart/img-1.jpg"
+                                                                    src="{{ asset('uploads/product/preview')}}/{{$wish->rel_to_product->preview}}"
                                                                     alt></a>
                                                         </div>
                                                         <div class="mini-cart-item-des">
-                                                            <a href="product.html">Stylish Pink Coat</a>
-                                                            <span class="mini-cart-item-price">$150</span>
+                                                            <a href="product.html">{{$wish->rel_to_product->product_name}}</a>
+                                                            <span class="mini-cart-item-price">&#2547;{{$wish->rel_to_product->after_discount}}</span>
                                                             <span class="mini-cart-item-quantity"><a href="#"><i
                                                                         class="ti-close"></i></a></span>
                                                         </div>
                                                     </div>
-                                                    <div class="mini-cart-item clearfix">
-                                                        <div class="mini-cart-item-image">
-                                                            <a href="product.html"><img
-                                                                    src="{{ asset('frontend_assets') }}/images/cart/img-2.jpg"
-                                                                    alt></a>
-                                                        </div>
-                                                        <div class="mini-cart-item-des">
-                                                            <a href="product.html">Blue Bag</a>
-                                                            <span class="mini-cart-item-price">$120</span>
-                                                            <span class="mini-cart-item-quantity"><a href="#"><i
-                                                                        class="ti-close"></i></a></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="mini-cart-item clearfix">
-                                                        <div class="mini-cart-item-image">
-                                                            <a href="product.html"><img
-                                                                    src="{{ asset('frontend_assets') }}/images/cart/img-3.jpg"
-                                                                    alt></a>
-                                                        </div>
-                                                        <div class="mini-cart-item-des">
-                                                            <a href="product.html">Kids Blue Shoes</a>
-                                                            <span class="mini-cart-item-price">$120</span>
-                                                            <span class="mini-cart-item-quantity"><a href="#"><i
-                                                                        class="ti-close"></i></a></span>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
+
                                                 </div>
                                                 <div class="mini-cart-action clearfix">
                                                     <div class="mini-btn">
-                                                        <a href="wishlist.html" class="view-cart-btn">View
+                                                        <a href="{{route('wish')}}" class="view-cart-btn">View
                                                             Wishlist</a>
                                                     </div>
                                                 </div>
@@ -488,6 +471,7 @@
     <!-- Plugins for this template -->
     <script src="{{ asset('frontend_assets') }}/js/modernizr.custom.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.dlmenu.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
     <script src="{{ asset('frontend_assets') }}/js/script.js"></script>

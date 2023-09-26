@@ -6,6 +6,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\FooterController;
@@ -19,7 +21,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubcategorytController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VariationController;
-
+use App\Http\Controllers\WishController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -180,3 +182,16 @@ Route::post('/add/cart',[CartController::class ,'cart'])->name('cart');
 Route::get('/add/cart/remove/{id}',[CartController::class ,'cart_remove'])->name('cart.remove');
 Route::get('/view/cart',[CartController::class ,'view_cart'])->name('view.cart');
 Route::post('/view/cart/update',[CartController::class ,'view_cart_update'])->name('view.cart.update');
+
+// Wishlist
+Route::get('/wish',[WishController::class ,'wish'])->name('wish');
+
+// Coupon
+
+Route::get('/coupon',[CouponController::class , 'coupon'])->name('coupon');
+Route::post('/coupon/store',[CouponController::class , 'coupon_store'])->name('coupon.store');
+Route::post('/getcouponstatus',[CouponController::class , 'getcouponstatus']);
+
+
+// Checkout
+Route::get('/checkout',[CheckoutController::class , 'checkout'])->name('checkout');

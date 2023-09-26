@@ -13,7 +13,7 @@ class CustomerAuthController extends Controller
 
 {
     function customer_login(){
-        return view('front.customer.login');
+        return view('front.customer.clogin');
     }
     function customer_register(){
         return view('front.customer.register');

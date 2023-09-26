@@ -130,13 +130,13 @@
 
 
                              @auth('customer')
-                             <button type="submit" class="theme-btn-s2 border-0">Add to cart</button>
+                             <button type="submit" name="btn" value="1" class="theme-btn-s2 border-0">Add to cart</button>
                             @else
                             <a href="{{route('customer.login')}}" class="theme-btn-s2">Add to cart</a>
                             @endauth
 
                              @auth('customer')
-                             <a href="{{route('customer.profile')}}" class="wl-btn"><i class="fi flaticon-heart"></i></a>
+                             <button type="submit" name="btn" value="2" class="wl-btn"><i class="fi flaticon-heart"></i></button>
                             @else
 
                             <a href="{{route('customer.login')}}" class="wl-btn"><i class="fi flaticon-heart"></i></a>
