@@ -14,7 +14,7 @@ class Wish extends Model
         return $this->belongsTo(Product::class , 'product_id');
     }
     function rel_to_inventory(){
-        return $this->belongsTo(Inventory::class , 'product_id');
+        return $this->belongsTo(Inventory::class , 'product_id','color_id','size_id');
     }
 
 

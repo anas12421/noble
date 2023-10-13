@@ -33,7 +33,7 @@ class ProductController extends Controller
        'preview'=>'required',
     ]);
 
-    
+
     $remove = array("@", "#" , "(", ")", '"' ,":","*", "'", "/" , " ") ;
     $slug =Str::lower(str_replace($remove, '-',$request->product)).'-'.random_int(100, 30000) ;
 
@@ -55,6 +55,7 @@ class ProductController extends Controller
         'long_desp' => $request->long_desp,
         'addi_desp' => $request->addi_desp,
         'preview' => $file_name,
+        'slug' => $slug,
         'created_at' =>Carbon::now(),
     ]);
 

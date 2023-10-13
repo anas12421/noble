@@ -18,4 +18,9 @@ class WishController extends Controller
             // 'inv'=>$inv,
         ]);
     }
+
+    function wish_remove($id){
+        Wish::find($id)->delete();
+        return back();
+    }
 }

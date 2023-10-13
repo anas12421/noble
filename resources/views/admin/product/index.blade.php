@@ -192,7 +192,7 @@
                 }
             });
             $.ajax({
-                url:'/getstatus',
+                url:'/getsubcategory',
                 type: 'POST',
                 data:{'category_id': category_id},
 

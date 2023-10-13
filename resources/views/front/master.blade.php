@@ -24,7 +24,7 @@
     <link href="{{ asset('frontend_assets') }}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/odometer-theme-default.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/sass/style.css" rel="stylesheet">
-    
+
 </head>
 
 
@@ -33,7 +33,7 @@
     <!-- start page-wrapper -->
     <div class="page-wrapper">
         <!-- start preloader -->
-        <div class="preloader">
+        {{-- <div class="preloader">
             <div class="vertical-centered-box">
                 <div class="content">
                     <div class="loader-circle"></div>
@@ -43,7 +43,7 @@
                     <img src="{{ asset('frontend_assets') }}/images/preloader.png" alt="">
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- end preloader -->
 
         <!-- start header -->
@@ -159,7 +159,7 @@
                                                         <div class="mini-cart-item-des">
                                                             <a href="product.html">{{$wish->rel_to_product->product_name}}</a>
                                                             <span class="mini-cart-item-price">&#2547;{{$wish->rel_to_product->after_discount}}</span>
-                                                            <span class="mini-cart-item-quantity"><a href="#"><i
+                                                            <span class="mini-cart-item-quantity"><a href="{{route('wish.remove' ,$wish->id)}}"><i
                                                                         class="ti-close"></i></a></span>
                                                         </div>
                                                     </div>
@@ -168,8 +168,14 @@
                                                 </div>
                                                 <div class="mini-cart-action clearfix">
                                                     <div class="mini-btn">
-                                                        <a href="{{route('wish')}}" class="view-cart-btn">View
+                                                       @auth('customer')
+                                                       <a href="{{route('wish')}}" class="view-cart-btn">View
+                                                        Wishlist</a>
+
+                                                        @else
+                                                        <a href="{{route('customer.login')}}" class="view-cart-btn">View
                                                             Wishlist</a>
+                                                       @endauth
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,6 +211,7 @@
                                                             $cart->id)}}"><i
                                                                         class="ti-close"></i></a></span>
                                                         </div>
+                                                        <input type="hidden" name="product_id" value="{{$cart->rel_to_product->id}}">
                                                     </div>
                                                     @php
                                                     $sub += $cart->rel_to_product->after_discount*$cart->quantity ;
@@ -230,7 +237,12 @@
                                                     <span class="mini-checkout-price">Subtotal:
                                                         <span>&#2547;{{$sub}}</span></span>
                                                     <div class="mini-btn">
+                                                        @auth('customer')
                                                         <a href="{{route('view.cart')}}" class="view-cart-btn">View Cart</a>
+
+                                                        @else
+                                                        <a href="{{route('customer.login')}}" class="view-cart-btn">View Cart</a>
+                                                        @endauth
                                                     </div>
                                                 </div>
                                             </div>

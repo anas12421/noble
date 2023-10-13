@@ -82,6 +82,9 @@
                     <form action="{{route('cart')}}" method="POST">
                         @csrf
                         <div class="product-filter-item color">
+                            <input type="hidden" name="product_id" value="{{$product_info->id}}">
+                        </div>
+                        <div class="product-filter-item color">
                             <div class="color-name">
                                 <span>Color :</span>
                                 <ul>
@@ -143,7 +146,7 @@
                             @endauth
                         </div>
 
-                        <input type="hidden" value="{{$product_info->id}}" name="product_id">
+                        {{-- <input type="hidden" value="{{$product_info->id}}" name="product_id"> --}}
                     </form>
 
 

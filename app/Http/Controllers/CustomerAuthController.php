@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
 
 class CustomerAuthController extends Controller
 
@@ -61,5 +63,28 @@ class CustomerAuthController extends Controller
         }else{
             return back()->with('wrong','Invalid Email !');
         }
+    }
+
+    function githubredirect_login(){
+        return Socialite::driver('github')->redirect();
+    }
+    function githubcallback_login(){
+        $githubUser = Socialite::driver('github')->user();
+
+        $user = Customer::updateOrCreate(
+            [
+                'email'=>$githubUser->email,
+            ],
+            [
+            'fname'=>$githubUser->name,
+            // 'lname'=>$githubUser->name,
+            'email'=>$githubUser->email,
+            'password'=>bcrypt(123456789),
+            'created_at'=>Carbon::now(),
+
+        ]);
+
+        Auth::guard('customer')->attempt(['email'=>$githubUser->email , 'password'=>123456789]);
+        return redirect()->route('home');
     }
 }

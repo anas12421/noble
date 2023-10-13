@@ -100,14 +100,18 @@
                                             <input type="hidden" name="product_id" value="{{$wish->product_id}}" id="">
                                             <input type="hidden" name="" value="{{App\Models\Inventory::where('product_id' , $wish->product_id)->first()->quantity}}" id="">
                                             <td class="ptice">&#2547; {{$wish->rel_to_product->after_discount}}</td>
-                                            <td class="stock"><span class="in-stock {{App\Models\Inventory::where('product_id' , $wish->product_id)->first()->quantity == 0 ? 'out-stock' : ''}}"> {{App\Models\Inventory::where('product_id' , $wish->product_id)->first()->quantity == 0 ? 'Out' : 'In'}} Stock</span></td>
+                                            <td class="stock"><span class="in-stock {{App\Models\Inventory::where('product_id' , $wish->product_id)->where('color_id' , $wish->color_id)->where('size_id' , $wish->size_id)->first()->quantity == 0 ? 'out-stock' : ''}}"> {{App\Models\Inventory::where('product_id' , $wish->product_id)->where('color_id' , $wish->color_id)->where('size_id' , $wish->size_id)->first()->quantity == 0 ? 'Out' : 'In'}} Stock</span></td>
+
+                                            {{-- <td>
+                                                <input type="text" value="{{$wish->rel_to_inventory->quantity}}">
+                                            </td> --}}
                                             <td class="add-wish">
                                                 <a class="theme-btn-s2" href="cart.html">Shop Now</a>
                                             </td>
                                             <td class="action">
                                                 <ul>
                                                     <li class="w-btn"><a data-bs-toggle="tooltip"
-                                                            data-bs-html="true" title="" href="#"
+                                                            data-bs-html="true" title="" href="{{route('wish.remove' , $wish->id)}}"
                                                             data-bs-original-title="Remove"
                                                             aria-label="Remove"><i
                                                                 class="fi flaticon-remove"></i></a></li>

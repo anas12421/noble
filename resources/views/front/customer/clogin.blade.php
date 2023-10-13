@@ -126,8 +126,8 @@
                                     <li><button class="bg-danger" tabindex="0" type="button"><span><i
                                                     class="ti-google"></i></span></button></li>
                                     <li>
-                                        <button class="bg-secondary" tabindex="0" type="button"><span><i
-                                                    class="ti-github"></i></span></button>
+                                        <a href="{{route('github.login')}}" class="bg-secondary" tabindex="0" ><span><i
+                                                    class="ti-github"></i></span></a>
                                     </li>
                                 </ul>
                                 <p class="subText">Don't have an account? <a href="{{route('customer.register')}}">Create free

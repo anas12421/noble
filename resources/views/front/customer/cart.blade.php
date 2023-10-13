@@ -54,6 +54,8 @@
                                         @php
 
                                             $sub = 0;
+                                            // $cat_id = array();
+                                            $string = '';
                                         @endphp
 
                                         @foreach ($carts as $cart)
@@ -70,6 +72,7 @@
                                                 </div>
                                                 <div class="product">
                                                     <ul>
+                                                        {{-- <li class="first-cart">{{$cart->rel_to_product->id}}</li> --}}
                                                         <li class="first-cart">{{$cart->rel_to_product->product_name}}</li>
                                                         <li>
                                                             <div class="rating-product">
@@ -92,7 +95,7 @@
                                                     <div data-price='{{$cart->rel_to_product->after_discount}}' class="inc qtybutton">+</div>
                                                 </div>
                                             </td>
-                                            <td class="ptice cartmap">&#2547;{{$cart->rel_to_product->after_discount*$cart->quantity}}</td>
+                                            <td class="ptice cartmap">&#2547;<span class="cartmap">{{$cart->rel_to_product->after_discount*$cart->quantity}}</span></td>
                                             <td class="action">
                                                 <ul>
                                                     <li class="w-btn"><a data-bs-toggle="tooltip"
@@ -106,6 +109,8 @@
 
                                         @php
                                             $sub += $cart->rel_to_product->after_discount*$cart->quantity;
+                                            $cat_id = array($cart->rel_to_product->category_id);
+                                            $string = implode(',',$cat_id) ;
                                         @endphp
                                         @endforeach
 
@@ -122,10 +127,40 @@
                         </form>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <div class="apply-area mb-3">
-                            <input type="text" class="form-control" placeholder="Enter your coupon">
-                            <button class="theme-btn-s2" type="submit">Apply</button>
-                        </div>
+
+
+                    @php
+                     $final_discount = 0;
+                     $total = $sub;
+
+                     if ($type == 1) {
+                        $final_discount = round($sub*$amount/100);
+                        $total = $sub-$final_discount;
+
+
+                     }
+                     elseif ($type == 2) {
+                        $final_discount = $amount;
+                        $total = $sub-$final_discount;
+                     }
+                    @endphp
+
+                        <form action="{{route('view.cart')}}" method="GET">
+
+                            <div class="apply-area mb-3">
+                                <input type="text" name="coupon" class="form-control" placeholder="Enter your coupon">
+                                <button class="theme-btn-s2" type="submit">Apply</button>
+                            </div>
+
+                            @if ($msg)
+                                <div class="alert alert-danger">{{$msg}}</div>
+                            @endif
+                        </form>
+
+
+
+
+
                         <div class="cart-total-wrap">
                             <h3>Cart Totals</h3>
                             <div class="sub-total">
@@ -134,28 +169,46 @@
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
-                                <span>00.00</span>
+                                <span>&#2547;{{$final_discount}}</span>
                             </div>
                             <div class="total mb-3">
                                 <h4>Total</h4>
-                                <span>$300.00</span>
+                                <span>&#2547;{{$total}}</span>
                             </div>
+                            @php
+                                session([
+                                    'discount'=> $final_discount,
+                                    'total'=> $total,
+                                ])
+                            @endphp
                             <a class="theme-btn-s2" href="{{route('checkout')}}">Proceed To CheckOut</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="cart-prodact">
+
                 <h2>You May be Interested in…</h2>
+                {{-- {{$string}} --}}
+                {{-- @php
+
+                @endphp --}}
                 <div class="row">
+                    {{-- @foreach (App\Models\Product::where('category_id' ,$string)->get() as $cat) --}}
+                    @foreach ($product as $cat)
                     <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                         <div class="product-item">
                             <div class="image">
-                                <img src="assets/images/interest-product/1.png" alt="">
+                                <img style="width: 150px; height: 150px;" src="{{asset('uploads/product/preview')}}/{{$cat->preview}}" alt="">
+                                @if ($cat->discount)
+
+                                <div class="tag sale">-{{$cat->discount}}%</div>
+                                @else
                                 <div class="tag new">New</div>
+                                @endif
                             </div>
                             <div class="text">
-                                <h2><a href="product-single.html">Wireless Headphones</a></h2>
+                                <h2><a href="product-single.html">{{$cat->product_name}}</a></h2>
                                 <div class="rating-product">
                                     <i class="fi flaticon-star"></i>
                                     <i class="fi flaticon-star"></i>
@@ -165,16 +218,26 @@
                                     <span>130</span>
                                 </div>
                                 <div class="price">
-                                    <span class="present-price">$120.00</span>
-                                    <del class="old-price">$200.00</del>
+
+
+                                    <span class="present-price">&#2547;{{$cat->after_discount}}</span>
+                                    @if ($cat->discount)
+
+                                    <del class="old-price">&#2547;{{$cat->price}}</del>
+                                    @endif
                                 </div>
                                 <div class="shop-btn">
-                                    <a class="theme-btn-s2" href="product.html">Shop Now</a>
+                                    <a class="theme-btn-s2" href="{{route('check',$cat->slug)}}">Shop Now</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+
+                    @endforeach
+
+
+
+                    {{-- <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                         <div class="product-item">
                             <div class="image">
                                 <img src="assets/images/interest-product/2.png" alt="">
@@ -251,7 +314,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

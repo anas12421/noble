@@ -165,6 +165,9 @@ Route::get('/footer/4/{id}',[FooterController::class ,'footer4_delete'])->name('
 Route::post('/footer/copyright/{id}',[FooterController::class ,'copyright'])->name('copyright');
 
 // Customer
+Route::get('/customer/githubredirect' , [CustomerAuthController::class ,'githubredirect_login'])->name('github.login');
+Route::get('/customer/githubcallback' , [CustomerAuthController::class ,'githubcallback_login'])->name('githubcallback.login');
+
 Route::get('/customer/login',[CustomerAuthController::class ,'customer_login'])->name('customer.login');
 Route::get('/customer/register',[CustomerAuthController::class ,'customer_register'])->name('customer.register');
 Route::post('/customer/store',[CustomerAuthController::class ,'customer_store'])->name('customer.store');
@@ -185,6 +188,7 @@ Route::post('/view/cart/update',[CartController::class ,'view_cart_update'])->na
 
 // Wishlist
 Route::get('/wish',[WishController::class ,'wish'])->name('wish');
+Route::get('/wish/remove/{id}',[WishController::class ,'wish_remove'])->name('wish.remove');
 
 // Coupon
 
@@ -195,3 +199,6 @@ Route::post('/getcouponstatus',[CouponController::class , 'getcouponstatus']);
 
 // Checkout
 Route::get('/checkout',[CheckoutController::class , 'checkout'])->name('checkout');
+Route::post('/getcity',[CheckoutController::class , 'getcity']);
+Route::post('/order/store',[CheckoutController::class , 'order_store'])->name('order.store');
+Route::get('/order/success',[CheckoutController::class , 'order_success'])->name('order.success');
