@@ -71,7 +71,7 @@ class CustomerAuthController extends Controller
     function githubcallback_login(){
         $githubUser = Socialite::driver('github')->user();
 
-        $user = Customer::updateOrCreate(
+         Customer::updateOrCreate(
             [
                 'email'=>$githubUser->email,
             ],
@@ -79,12 +79,40 @@ class CustomerAuthController extends Controller
             'fname'=>$githubUser->name,
             // 'lname'=>$githubUser->name,
             'email'=>$githubUser->email,
+            'photo'=>$githubUser->avatar,
             'password'=>bcrypt(123456789),
             'created_at'=>Carbon::now(),
 
         ]);
 
         Auth::guard('customer')->attempt(['email'=>$githubUser->email , 'password'=>123456789]);
+        return redirect()->route('home');
+    }
+
+
+
+    function googleredirect_login(){
+        return Socialite::driver('google')->redirect();
+    }
+    function googlecallback_login(){
+        $googleUser = Socialite::driver('google')->user();
+        // return dd($googleUser);
+
+         Customer::updateOrCreate(
+            [
+                'email'=>$googleUser->email,
+            ],
+            [
+            'fname'=>$googleUser->name,
+            // 'lname'=>$githubUser->name,
+            'email'=>$googleUser->email,
+            'photo'=>$googleUser->avatar,
+            'password'=>bcrypt(123456789),
+            'created_at'=>Carbon::now(),
+
+        ]);
+
+        Auth::guard('customer')->attempt(['email'=>$googleUser->email , 'password'=>123456789]);
         return redirect()->route('home');
     }
 }

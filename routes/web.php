@@ -167,6 +167,8 @@ Route::post('/footer/copyright/{id}',[FooterController::class ,'copyright'])->na
 // Customer
 Route::get('/customer/githubredirect' , [CustomerAuthController::class ,'githubredirect_login'])->name('github.login');
 Route::get('/customer/githubcallback' , [CustomerAuthController::class ,'githubcallback_login'])->name('githubcallback.login');
+Route::get('/customer/googleredirect' , [CustomerAuthController::class ,'googleredirect_login'])->name('google.login');
+Route::get('/customer/googlecallback' , [CustomerAuthController::class ,'googlecallback_login'])->name('googlecallback.login');
 
 Route::get('/customer/login',[CustomerAuthController::class ,'customer_login'])->name('customer.login');
 Route::get('/customer/register',[CustomerAuthController::class ,'customer_register'])->name('customer.register');

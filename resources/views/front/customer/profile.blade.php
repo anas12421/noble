@@ -41,6 +41,7 @@
 
                               @else
                               <img style="width: 70px" class="m-auto" src="{{asset('uploads/customer')}}/{{Auth::guard('customer')->user()->photo}} " alt="">
+                              <img style="width: 70px" class="m-auto" src="{{Auth::guard('customer')->user()->photo}} " alt="">
 
                               @endif
                               <div class="card-body">
