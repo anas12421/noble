@@ -22,11 +22,13 @@
     <div class="row">
         <div class="col-lg-3">
 
-                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</button>
-                  <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">My Order</button>
-                  <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill" data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">My Wishlist</button>
-                  <a  class="text-center py-3" href="{{route('customer.logout')}}" class="nav-link" >Logout</a>
+                <div class="me-3">
+                  <ul>
+                    <li><a href="{{route('customer.profile')}}" class="btn btn-primary w-100">Profile</a></li>
+                    <li><a href="{{route('my.orders')}}" class="btn  w-100" >My Order</a></li>
+                    <li><a href="" class="btn w-100" >My Wishlist</a></li>
+                    <li><a  class="text-center btn btn-warning w-100" href="{{route('customer.logout')}}" class="nav-link" >Logout</a></li>
+                  </ul>
                 </div>
 
         </div>

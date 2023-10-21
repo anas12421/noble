@@ -12,4 +12,7 @@ class OrderProduct extends Model
     function rel_to_product(){
         return $this->belongsTo(Product::class , 'product_id');
     }
+    function rel_to_inventory(){
+        return $this->belongsTo(Inventory::class , 'product_id');
+    }
 }

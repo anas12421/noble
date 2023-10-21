@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
+// use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class CustomerController extends Controller
 {
@@ -199,5 +203,24 @@ class CustomerController extends Controller
                 return back()->with('update','Profile Updated !');
         }
 
+    }
+
+    function my_orders(){
+        $orders = Order::where('customer_id', Auth::guard('customer')->id())->latest()->get();
+
+        return view('front.customer.myorder',[
+            'orders'=>$orders,
+        ]);
+
+    }
+
+    function download_invoice($id){
+        $order_invoice =  Order::find($id);
+
+        $pdf = PDF::loadView('front.customer.invoicedownload', [
+            'order_id'=>$order_invoice->order_id,
+        ]);
+
+        return $pdf->download('myorder.pdf');
     }
 }

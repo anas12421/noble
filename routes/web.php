@@ -10,6 +10,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\CustomerOrderController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\UserController;
@@ -180,6 +181,8 @@ Route::get('/customer/list',[CustomerController::class ,'customer_list'])->name(
 Route::get('/customer/profile',[CustomerController::class ,'customer_profile'])->name('customer.profile');
 Route::get('/customer/logout',[CustomerController::class ,'customer_logout'])->name('customer.logout');
 Route::post('/customer/update',[CustomerController::class ,'customer_update'])->name('customer.update');
+Route::get('/customer/my/orders',[CustomerController::class ,'my_orders'])->name('my.orders');
+Route::get('/download/invoice/{id}',[CustomerController::class ,'download_invoice'])->name('download.invoice');
 
 
 // Cart
@@ -204,3 +207,7 @@ Route::get('/checkout',[CheckoutController::class , 'checkout'])->name('checkout
 Route::post('/getcity',[CheckoutController::class , 'getcity']);
 Route::post('/order/store',[CheckoutController::class , 'order_store'])->name('order.store');
 Route::get('/order/success',[CheckoutController::class , 'order_success'])->name('order.success');
+
+// Orders
+Route::get('/customer/orders',[CustomerOrderController::class , 'orders'])->name('orders');
+Route::post('/customer/order/status/{id}',[CustomerOrderController::class , 'order_status'])->name('order.status');

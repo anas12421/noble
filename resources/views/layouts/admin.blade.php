@@ -327,6 +327,16 @@
                             {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('orders')}}">
+                            <i class="link-icon" data-feather="feather"></i>
+                            <span class="link-title">Customer Order</span>
+                            {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
+                        </a>
+                    </li>
+
+
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#advancedUI" role="button"
                             aria-expanded="false" aria-controls="advancedUI">
