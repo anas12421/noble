@@ -22,6 +22,7 @@
     <!-- endinject -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <!-- Layout styles -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css" integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -335,6 +336,13 @@
                             {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('cancel.order.request')}}">
+                            <i class="link-icon" data-feather="feather"></i>
+                            <span class="link-title">Customer Order Cancel</span>
+                            {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
+                        </a>
+                    </li>
 
 
                     <li class="nav-item">
@@ -617,58 +625,28 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="notificationDropdown">
                                 <div class="dropdown-header d-flex align-items-center justify-content-between">
-                                    <p class="mb-0 font-weight-medium">6 New Notifications</p>
+                                    <p class="mb-0 font-weight-medium">{{App\Models\OrderCancel::where('status' , 0)->count()}} New Notifications</p>
                                     <a href="javascript:;" class="text-muted">Clear all</a>
                                 </div>
                                 <div class="dropdown-body">
-                                    <a href="javascript:;" class="dropdown-item">
+
+                                    @foreach (App\Models\OrderCancel::where('status' , 0)->get() as $cancel_order )
+
+                                    <a href="{{route('cancel.details', $cancel_order->id)}}" class="dropdown-item">
                                         <div class="icon">
                                             <i data-feather="user-plus"></i>
                                         </div>
                                         <div class="content">
-                                            <p>New customer registered</p>
-                                            <p class="sub-text text-muted">2 sec ago</p>
+                                            <p>Order Cancel Request</p>
+                                            <p>Order ID : {{App\Models\Order::find($cancel_order->order_id)->order_id}} </p>
+                                            <p class="sub-text text-muted">{{$cancel_order->created_at->diffForHumans()}}</p>
                                         </div>
                                     </a>
-                                    <a href="javascript:;" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="gift"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>New Order Recieved</p>
-                                            <p class="sub-text text-muted">30 min ago</p>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="alert-circle"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Server Limit Reached!</p>
-                                            <p class="sub-text text-muted">1 hrs ago</p>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="layers"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Apps are ready for update</p>
-                                            <p class="sub-text text-muted">5 hrs ago</p>
-                                        </div>
-                                    </a>
-                                    <a href="javascript:;" class="dropdown-item">
-                                        <div class="icon">
-                                            <i data-feather="download"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Download completed</p>
-                                            <p class="sub-text text-muted">6 hrs ago</p>
-                                        </div>
-                                    </a>
+                                    @endforeach
+
                                 </div>
                                 <div class="dropdown-footer d-flex align-items-center justify-content-center">
-                                    <a href="javascript:;">View all</a>
+                                    <a href="{{route('cancel.order.request')}}">View all</a>
                                 </div>
                             </div>
                         </li>
@@ -800,11 +778,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js" integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <!-- endinject -->
     <!-- custom js for this page -->
     <script src="{{ asset('backend_assets') }}/assets/js/dashboard.js"></script>
     <script src="{{ asset('backend_assets') }}/assets/js/datepicker.js"></script>
     <!-- end custom js for this page -->
+
     @yield('footer_script')
 </body>
 

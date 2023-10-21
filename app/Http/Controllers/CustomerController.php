@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderProduct;
+use App\Models\Shipping;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -221,6 +224,8 @@ class CustomerController extends Controller
             'order_id'=>$order_invoice->order_id,
         ]);
 
-        return $pdf->download('myorder.pdf');
+        return $pdf->stream('myorder.pdf');
     }
+
+    
 }

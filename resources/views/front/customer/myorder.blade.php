@@ -76,7 +76,16 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{route('download.invoice' ,$order->id)}}" target="_blank" class="btn btn-info">Download Invoice</a>
+                                            @if ($order->status == 5)
+                                             <button disabled class="btn btn-success">Order Canceled</button>
+                                             <a href="{{route('delete.order' ,$order->id)}}" title="Delete" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                                            @elseif (App\Models\OrderCancel::where('order_id' , $order->id)->exists())
+                                            <a href="{{route('download.invoice' ,$order->id)}}" title="Download Invoice" target="_blank" class="btn btn-warning"><i class="fa-solid fa-download"></i></a>
+                                            <button disabled title="Already Sent Request" class="btn btn-info"><i class="fa-solid fa-check"></i></button>
+                                            @else
+                                            <a href="{{route('download.invoice' ,$order->id)}}" title="Download Invoice" target="_blank" class="btn btn-warning"><i class="fa-solid fa-download"></i></a>
+                                            <a href="{{route('cancel.order' ,$order->id)}}" title="Cancel Order" class="btn btn-danger"><i class="fa-solid fa-cancel"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @empty

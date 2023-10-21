@@ -183,6 +183,7 @@ Route::get('/customer/logout',[CustomerController::class ,'customer_logout'])->n
 Route::post('/customer/update',[CustomerController::class ,'customer_update'])->name('customer.update');
 Route::get('/customer/my/orders',[CustomerController::class ,'my_orders'])->name('my.orders');
 Route::get('/download/invoice/{id}',[CustomerController::class ,'download_invoice'])->name('download.invoice');
+Route::get('/delete/order/{id}',[CustomerController::class ,'delete_order'])->name('delete.order');
 
 
 // Cart
@@ -211,3 +212,9 @@ Route::get('/order/success',[CheckoutController::class , 'order_success'])->name
 // Orders
 Route::get('/customer/orders',[CustomerOrderController::class , 'orders'])->name('orders');
 Route::post('/customer/order/status/{id}',[CustomerOrderController::class , 'order_status'])->name('order.status');
+Route::get('/cancel/order/{id}',[CustomerOrderController::class , 'cancel_order'])->name('cancel.order');
+Route::post('/cancel/order/reason/{id}',[CustomerOrderController::class , 'cancel_reason'])->name('cancel.reason');
+Route::get('/cancel/request',[CustomerOrderController::class , 'cancel_order_request'])->name('cancel.order.request');
+Route::get('/cancel/details/{id}',[CustomerOrderController::class , 'cancel_details'])->name('cancel.details');
+Route::get('/cancel/accept/{id}',[CustomerOrderController::class , 'cancel_accept'])->name('cancel.accept');
+Route::get('/delete/order/{id}',[CustomerOrderController::class , 'delete_order'])->name('delete.order');
