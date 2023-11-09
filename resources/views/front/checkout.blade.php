@@ -248,7 +248,7 @@
                             <div class="title2 border-0">
                                 <h5>Discount : &#2547;{{session('discount')}}</h5>
                             </div>
-                            @error('color')
+                            @error('charge')
                             <div class="alert alert-danger my-2">Please Select Delivery Charge</div>
                             @enderror
                             <div class="title border-0">
@@ -256,11 +256,11 @@
                             </div>
                             <ul>
                                 <li class="free">
-                                    <input id="Free" type="radio" data-charge='{{session('total')}}' name="color" class="dcharge" value="70">
+                                    <input id="Free" type="radio" data-charge='{{session('total')}}' name="charge" class="dcharge" value="70">
                                     <label for="Free">Inside City: <span>&#2547;70</span></label>
                                 </li>
                                 <li class="free">
-                                    <input id="Local" type="radio" data-charge="{{session('total')}}" name="color" class="dcharge" value="120">
+                                    <input id="Local" type="radio" data-charge="{{session('total')}}" name="charge" class="dcharge" value="120">
                                     <label for="Local">Outside City: <span>&#2547;120</span></label>
                                 </li>
                             </ul>
@@ -315,6 +315,7 @@
                     </div>
                 </div>
 
+                <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->id()}}">
                 <input type="hidden" name="discount" value="{{session('discount')}}">
                 <input type="hidden" name="total" value="{{session('total')}}">
             </div>

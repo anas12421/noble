@@ -44,7 +44,7 @@
                 <div class="col-12">
                     <div class="single-page-title">
                         <h2>Your Wishlist</h2>
-                        <p>There are 4 products in this list</p>
+                        <p>There are {{$wishs->count()}} products in this list</p>
                     </div>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                                                 <input type="text" value="{{$wish->rel_to_inventory->quantity}}">
                                             </td> --}}
                                             <td class="add-wish">
-                                                <a class="theme-btn-s2" href="cart.html">Shop Now</a>
+                                                <a class="theme-btn-s2" href="{{route('check', $wish->rel_to_product->slug)}}">Shop Now</a>
                                             </td>
                                             <td class="action">
                                                 <ul>

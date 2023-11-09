@@ -23,6 +23,8 @@ use App\Http\Controllers\SubcategorytController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\WishController;
+use App\Http\Controllers\SslCommerzPaymentController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -218,3 +220,23 @@ Route::get('/cancel/request',[CustomerOrderController::class , 'cancel_order_req
 Route::get('/cancel/details/{id}',[CustomerOrderController::class , 'cancel_details'])->name('cancel.details');
 Route::get('/cancel/accept/{id}',[CustomerOrderController::class , 'cancel_accept'])->name('cancel.accept');
 Route::get('/delete/order/{id}',[CustomerOrderController::class , 'delete_order'])->name('delete.order');
+
+
+// SSLCOMMERZ Start
+
+Route::get('/pay', [SslCommerzPaymentController::class, 'index'])->name('pay_ssl');
+Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
+
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END
+
+
+// stripe payement
+Route::controller(StripePaymentController::class)->group(function(){
+    Route::get('stripe', 'stripe')->name('stripe');
+    Route::post('stripe', 'stripePost')->name('stripe.post');
+});

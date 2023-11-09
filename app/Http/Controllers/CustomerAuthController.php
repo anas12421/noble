@@ -115,4 +115,7 @@ class CustomerAuthController extends Controller
         Auth::guard('customer')->attempt(['email'=>$googleUser->email , 'password'=>123456789]);
         return redirect()->route('home');
     }
+
+
+
 }

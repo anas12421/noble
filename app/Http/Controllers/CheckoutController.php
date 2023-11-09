@@ -50,7 +50,7 @@ class CheckoutController extends Controller
         'phone'=>'required',
         'address'=>'required',
         'payment_method'=>'required',
-        'color'=>'required',
+        'charge'=>'required',
     ]);
 
     if($request->payment_method == 1){
@@ -64,7 +64,7 @@ class CheckoutController extends Controller
             'total'=>$request->total+$request->charge,
             'sub_total'=>$request->total-$request->discount,
             'discount'=>$request->discount,
-            'charge'=>$request->color,
+            'charge'=>$request->charge,
             'payment_method'=>$request->payment_method,
             'created_at'=>Carbon::now(),
         ]);
@@ -135,7 +135,7 @@ class CheckoutController extends Controller
                 'customer_id'=>Auth::guard('customer')->id(),
                 'product_id'=>$cart->product_id,
                 'price'=>$cart->rel_to_product->after_discount,
-                'color_id'=>$cart->color_id,
+                'charge_id'=>$cart->charge_id,
                 'size_id'=>$cart->size_id,
                 'quantity'=>$cart->quantity,
                 'created_at'=>Carbon::now(),
@@ -143,7 +143,7 @@ class CheckoutController extends Controller
 
             // Cart::find($cart->id)->delete();
             Inventory::where('product_id' , $cart->product_id)
-            ->where('color_id' , $cart->color_id)
+            ->where('charge_id' , $cart->charge_id)
             ->where('size_id',$cart->size_id)
             ->decrement('quantity',$cart->quantity);
         }
@@ -157,10 +157,12 @@ class CheckoutController extends Controller
 
 
     elseif($request->payment_method == 2){
-        echo 'ssl';
+        $data = $request->all();
+        return redirect()->route('pay_ssl')->with('data', $data);
     }
     elseif($request->payment_method == 3){
-        echo 'stripe';
+        $data = $request->all();
+        return redirect()->route('stripe')->with('data', $data);
     }
    }
 
