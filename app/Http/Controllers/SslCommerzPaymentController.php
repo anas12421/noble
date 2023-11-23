@@ -19,6 +19,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail;
+use App\Models\Coupon;
 
 class SslCommerzPaymentController extends Controller
 {
@@ -115,6 +116,7 @@ class SslCommerzPaymentController extends Controller
                 'ship_address' => $data['ship_address'],
                 'charge' => $data['charge'],
                 'payment_method' => $data['payment_method'],
+                'coupon' => $data['coupon'],
                 'discount' => $data['discount'],
                 'ship_check' => $check,
                 'customer_id' => $data['customer_id'],
@@ -253,15 +255,17 @@ class SslCommerzPaymentController extends Controller
         }else{
             $check =1;
         }
+        $total =$data->amount+$data->charge;
 
         Order::insert([
             'order_id'=>$order_id,
             'customer_id'=>$data->customer_id,
-            'total'=>$data->total+$data->charge,
-            'sub_total'=>$data->total-$data->discount,
+            'total'=>$total,
+            'sub_total'=>$data->amount+$data->discount-($data->charge),
             'discount'=>$data->discount,
             'charge'=>$data->charge,
             'payment_method'=>$data->payment_method,
+            'coupon'=>$data->coupon,
             'created_at'=>Carbon::now(),
         ]);
 
@@ -329,6 +333,7 @@ class SslCommerzPaymentController extends Controller
                 'created_at'=>Carbon::now(),
             ]);
 
+            Coupon::where('coupon' , $data->coupon)->decrement('limit' , 1);
             // Cart::find($cart->id)->delete();
             Inventory::where('product_id' , $cart->product_id)
             ->where('color_id' , $cart->color_id)

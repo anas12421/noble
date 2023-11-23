@@ -149,6 +149,13 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{route('role.view')}}">
+                            <i class="link-icon" data-feather="feather"></i>
+                            <span class="link-title">Role Management</span>
+                            {{-- <i class="link-arrow" data-feather="chevron-down"></i> --}}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#Components" role="button"
                             aria-expanded="false" aria-controls="uComponents">
                             <i class="link-icon" data-feather="feather"></i>

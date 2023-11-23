@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Billing;
 use App\Models\Customer;
+use App\Models\CustomerEmailVerify;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Shipping;
+use App\Notifications\EmailVerifyNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 // use PDF;
+use Illuminate\Support\Facades\Notification;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -227,5 +230,42 @@ class CustomerController extends Controller
         return $pdf->stream('myorder.pdf');
     }
 
-    
+    function customer_email_verify($token){
+        $verify_info = CustomerEmailVerify::where('token' , $token)->first();
+
+        Customer::find($verify_info->customer_id)->update([
+            'email_verified_at'=>Carbon::now(),
+        ]);
+
+        CustomerEmailVerify::where('token' , $token)->delete();
+        return redirect()->route('customer.login');
+    }
+
+
+    function resend_verify_email(){
+        return view('front.email_verify.resend_email');
+    }
+
+    function resend_email(Request $request){
+        $customer = Customer::where('email' , $request->email)->first();
+       if( Customer::where('email' , $request->email)->exists()){
+        CustomerEmailVerify::where('customer_id' , $customer->id)->delete();
+
+        $info = CustomerEmailVerify::create([
+            'customer_id'=>$customer->id,
+            'token'=>uniqid(),
+            'created_at'=>Carbon::now(),
+        ]);
+
+
+        Notification::send($customer, new EmailVerifyNotification($info));
+
+        return back()->with('success', "Email Sent Success, We will send you a verification enail on $customer->email");
+
+       }else{
+        return back();
+       }
+     }
+
+
 }

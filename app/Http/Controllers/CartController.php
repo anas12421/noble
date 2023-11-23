@@ -119,7 +119,7 @@ class CartController extends Controller
 
         $product = Product::latest()->take(4)->get();
         $carts = Cart::where('customer_id' , Auth::guard('customer')->id())->get();
-        return view('front.customer.cart' , compact('carts','msg','type','amount' , 'product'));
+        return view('front.customer.cart' , compact('carts','msg','type','amount' , 'product' , 'coupon'));
     }
 
     function view_cart_update(Request $request){

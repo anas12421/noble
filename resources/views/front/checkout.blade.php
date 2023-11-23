@@ -318,6 +318,7 @@
                 <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->id()}}">
                 <input type="hidden" name="discount" value="{{session('discount')}}">
                 <input type="hidden" name="total" value="{{session('total')}}">
+                <input type="hidden" name="coupon" value="{{session('coupon')}}">
             </div>
         </div>
     </div>

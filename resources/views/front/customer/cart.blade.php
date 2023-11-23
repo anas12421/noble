@@ -174,11 +174,14 @@
                             <div class="total mb-3">
                                 <h4>Total</h4>
                                 <span>&#2547;{{$total}}</span>
+
+                                <input type="hidden" value="{{$coupon}}">
                             </div>
                             @php
                                 session([
                                     'discount'=> $final_discount,
                                     'total'=> $total,
+                                    'coupon'=> $coupon,
                                 ])
                             @endphp
                             <a class="theme-btn-s2" href="{{route('checkout')}}">Proceed To CheckOut</a>

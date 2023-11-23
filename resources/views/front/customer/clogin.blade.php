@@ -51,6 +51,7 @@
                     <div class="col-lg-12">
                         <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST">
                             @csrf
+
                             <div class="wpo-accountInfo">
                                 <div class="wpo-accountInfoHeader">
                                     <a href="index.html"><img src="{{asset('frontend_assets')}}/images/logo-2.svg" alt=""></a>
@@ -68,12 +69,24 @@
                                 </div>
                             </div>
                             <div class="wpo-accountForm form-style">
+
+
                                 <div class="fromTitle">
                                     <h2>Login</h2>
                                     <p>Sign into your pages account</p>
+
+                                    @if (session('pass'))
+                                        <div class="alert alert-success">{{session('pass')}}</div>
+                                    @endif
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-12">
+                                        @if (session('verify_email'))
+                                            <div class="alert alert-warning mb-2">
+                                               <span>{{session('verify_email')}}</span>
+                                               <a href="{{route('resend.verify.email')}}">Resend Verification Link</a>
+                                            </div>
+                                        @endif
                                         <label>Email</label>
                                         <input type="text" id="email" name="email" value="{{old('email')}}" placeholder="demo@gmail.com">
                                         @error('email')
@@ -113,7 +126,7 @@
                                         <div class="check-box-wrap">
 
                                             <div class="forget-btn">
-                                                <a href="forgot.html">Forgot Password?</a>
+                                                <a href="{{route('forget')}}">Forgot Password?</a>
                                             </div>
                                         </div>
                                     </div>

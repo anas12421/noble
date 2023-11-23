@@ -138,14 +138,27 @@
                                     @endif
                                 </div>
                                 <div class="text">
+                                    @php
+                                    $avg= '';
+
+                                    $t_star = App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->sum('star');
+                                    $t_review =App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->get();
+
+                                    if($t_review->count() == 0){
+                                        $avg= 0;
+                                    }else{
+                                        $avg =round($t_star/$t_review->count());
+                                    }
+                                @endphp
                                     <h2><a href="{{route('check',$product->slug)}}">{{substr($product->product_name,0,15)}}</a></h2>
                                     <div class="rating-product">
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <span>130</span>
+                                        @for ($i=1; $i<=$avg;$i++)
+                                        <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i=$avg; $i<=4;$i++)
+                                        <i class="fa-regular fa-star"></i>
+                                        @endfor
+                                        <span>{{App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->count()}}</span>
                                     </div>
                                     <div class="price">
 
@@ -254,6 +267,18 @@
                 <div class="row g-0">
 
                     @foreach ($products->take(2) as $product)
+                    @php
+                    $avg= '';
+
+                    $t_star = App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->sum('star');
+                    $t_review =App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->get();
+
+                    if($t_review->count() == 0){
+                        $avg= 0;
+                    }else{
+                        $avg =round($t_star/$t_review->count());
+                    }
+                @endphp
 
                     <div class="col-lg-6 col-12">
                         <ul class="special-product">
@@ -265,12 +290,13 @@
                                     <div class="text">
                                         <h2><a href="product-single.html">{{$product->product_name}}</a></h2>
                                         <div class="rating-product">
-                                            <i class="fi flaticon-star"></i>
-                                            <i class="fi flaticon-star"></i>
-                                            <i class="fi flaticon-star"></i>
-                                            <i class="fi flaticon-star"></i>
-                                            <i class="fi flaticon-star"></i>
-                                            <span>130</span>
+                                            @for ($i=1; $i<=$avg;$i++)
+                                            <i class="fa fa-star"></i>
+                                            @endfor
+                                            @for ($i=$avg; $i<=4;$i++)
+                                            <i class="fa-regular fa-star"></i>
+                                            @endfor
+                                            <span>{{App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->count()}}</span>
                                         </div>
                                         <div class="price">
                                             <span class="present-price">&#2547;{{$product->after_discount}}</span>
@@ -307,6 +333,19 @@
                 <div class="trendin-slider owl-carousel">
                     @foreach ($products as $product)
 
+                    @php
+                    $avg= '';
+
+                    $t_star = App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->sum('star');
+                    $t_review =App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->get();
+
+                    if($t_review->count() == 0){
+                        $avg= 0;
+                    }else{
+                        $avg =round($t_star/$t_review->count());
+                    }
+                @endphp
+
                     <div class="product-item" title="{{$product->product_name}}">
                         <div class="image">
                             <img height="200" src="{{asset('uploads/product/preview')}}/{{$product->preview}}" alt="">
@@ -320,12 +359,13 @@
                         <div class="text">
                             <h2><a href="#">{{substr($product->product_name,0,15)}}</a></h2>
                             <div class="rating-product">
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <i class="fi flaticon-star"></i>
-                                <span>130</span>
+                                @for ($i=1; $i<=$avg;$i++)
+                                <i class="fa fa-star"></i>
+                                @endfor
+                                @for ($i=$avg; $i<=4;$i++)
+                                <i class="fa-regular fa-star"></i>
+                                @endfor
+                                <span>{{App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->count()}}</span>
                             </div>
                             <div class="price">
                                 <span class="present-price">&#2547;{{$product->after_discount}}</span>
@@ -425,6 +465,18 @@
                         <div class="highlight-wrap">
                             <h2>Recently added</h2>
                             @foreach ($products->take(3) as $product )
+                            @php
+                            $avg= '';
+
+                            $t_star = App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->sum('star');
+                            $t_review =App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->get();
+
+                            if($t_review->count() == 0){
+                                $avg= 0;
+                            }else{
+                                $avg =round($t_star/$t_review->count());
+                            }
+                        @endphp
 
                             <div class="product-card" title="{{$product->product_name}}">
                                 <div class="card-image">
@@ -435,12 +487,13 @@
                                 <div class="content">
                                    <h3><a href="product-single.html">{{substr($product->product_name,0,15)}}</a></h3>
                                     <div class="rating-product">
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <i class="fi flaticon-star"></i>
-                                        <span>120</span>
+                                        @for ($i=1; $i<=$avg;$i++)
+                                        <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i=$avg; $i<=4;$i++)
+                                        <i class="fa-regular fa-star"></i>
+                                        @endfor
+                                        <span>{{App\Models\OrderProduct::where('product_id' , $product->id)->whereNotNull('review')->count()}}</span>
                                     </div>
                                     <div class="price">
                                         <span class="present-price">&#2547;{{$product->after_discount}}</span>

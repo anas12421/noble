@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InvoiceMail;
-
+use App\Models\Coupon;
 
 class CheckoutController extends Controller
 {
@@ -66,6 +66,7 @@ class CheckoutController extends Controller
             'discount'=>$request->discount,
             'charge'=>$request->charge,
             'payment_method'=>$request->payment_method,
+            'coupon'=>$request->coupon,
             'created_at'=>Carbon::now(),
         ]);
 
@@ -135,15 +136,18 @@ class CheckoutController extends Controller
                 'customer_id'=>Auth::guard('customer')->id(),
                 'product_id'=>$cart->product_id,
                 'price'=>$cart->rel_to_product->after_discount,
-                'charge_id'=>$cart->charge_id,
+                'color_id'=>$cart->color_id,
                 'size_id'=>$cart->size_id,
                 'quantity'=>$cart->quantity,
                 'created_at'=>Carbon::now(),
             ]);
 
             // Cart::find($cart->id)->delete();
+
+            Coupon::where('coupon' , $request->coupon)->decrement('limit' , 1);
+
             Inventory::where('product_id' , $cart->product_id)
-            ->where('charge_id' , $cart->charge_id)
+            ->where('color_id' , $cart->color_id)
             ->where('size_id',$cart->size_id)
             ->decrement('quantity',$cart->quantity);
         }

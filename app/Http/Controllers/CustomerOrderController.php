@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
+use App\Models\Coupon;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\OrderCancel;
@@ -32,6 +33,8 @@ class CustomerOrderController extends Controller
             ]);
 
             $or =Order::find($id);
+
+            Coupon::where('coupon' , $or->coupon)->increment('limit' , 1);
 
             $orps = OrderProduct::where('customer_id', $or->customer_id)->get();
 
@@ -120,9 +123,11 @@ class CustomerOrderController extends Controller
 
         OrderCancel::find($id)->delete();;
 
-        $order_id = Order::find($cancel_details->order_id)->order_id;
+        $order_id = Order::find($cancel_details->order_id);
 
-        $orps = OrderProduct::where('order_id', $order_id)->get();
+        Coupon::where('coupon' , $order_id->coupon)->increment('limit' , 1);
+
+        $orps = OrderProduct::where('order_id', $order_id->order_id)->get();
 
             foreach($orps as $orp){
 

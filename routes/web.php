@@ -18,13 +18,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PassresetController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SubcategorytController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\VariationController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\StripePaymentController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -186,6 +189,9 @@ Route::post('/customer/update',[CustomerController::class ,'customer_update'])->
 Route::get('/customer/my/orders',[CustomerController::class ,'my_orders'])->name('my.orders');
 Route::get('/download/invoice/{id}',[CustomerController::class ,'download_invoice'])->name('download.invoice');
 Route::get('/delete/order/{id}',[CustomerController::class ,'delete_order'])->name('delete.order');
+Route::get('/customer/email/verify/{token}',[CustomerController::class ,'customer_email_verify'])->name('customer.email.verify');
+Route::get('/resend/verify/email' ,[CustomerController::class ,'resend_verify_email'])->name('resend.verify.email');
+Route::post('/resend/link/email' ,[CustomerController::class ,'resend_email'])->name('resend.email');
 
 
 // Cart
@@ -240,3 +246,24 @@ Route::controller(StripePaymentController::class)->group(function(){
     Route::get('stripe', 'stripe')->name('stripe');
     Route::post('stripe', 'stripePost')->name('stripe.post');
 });
+
+// Review
+Route::post('/review/store', [FrontendController::class , 'review_store'])->name('review.store');
+
+// Role Management
+Route::get('/role', [RoleController::class , 'role_view'])->name('role.view');
+Route::post('/permission/store', [RoleController::class , 'permission_store'])->name('permission.store');
+Route::post('/role/store', [RoleController::class , 'role_store'])->name('role.store');
+Route::get('/role/delete/{id}', [RoleController::class , 'role_delete'])->name('role.delete');
+Route::get('/role/edit/{id}', [RoleController::class , 'role_edit'])->name('role.edit');
+Route::post('/role/update/{id}', [RoleController::class , 'role_update'])->name('role.update');
+Route::post('/assign/role', [RoleController::class , 'assign_role'])->name('assign.role');
+Route::get('/remove/role/{id}', [RoleController::class , 'remove_role'])->name('remove.role');
+
+
+
+// Forget Password
+Route::get('/forget', [PassresetController::class , 'forget'])->name('forget');
+Route::post('/pass/reset/request', [PassresetController::class , 'pass_reset_request'])->name('pass.reset.request');
+Route::get('/pass/reset/form/{token}', [PassresetController::class , 'pass_reset_form'])->name('pass.reset.form');
+Route::post('/pass/reset/confirm/{token}', [PassresetController::class , 'pass_reset_confirm'])->name('pass.reset.confirm');

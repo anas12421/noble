@@ -8,9 +8,12 @@ use App\Models\footer1;
 use App\Models\Inventory;
 use App\Models\Offer1;
 use App\Models\Offer2;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductGallery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FrontendController extends Controller
 {
@@ -23,12 +26,14 @@ class FrontendController extends Controller
         // $products = Product::where('status',1)->get();
         $banners = Banner::all();
 
+
         return view('front.index' , [
             'categories'=>$categories,
             'products'=>$products,
             'banners'=>$banners,
             'offer1'=>$offer1,
             'offer2'=>$offer2,
+
 
         ]);
     }
@@ -38,6 +43,8 @@ class FrontendController extends Controller
         $product_id = Product::where('slug',$slug)->first()->id;
         $product_info = Product::find($product_id);
         $gal_img = ProductGallery::where('product_id',$product_id)->get();
+        $reviews = OrderProduct::where('product_id' , $product_id)->whereNotNull('review')->get();
+        $total_star = OrderProduct::where('product_id' , $product_id)->whereNotNull('review')->sum('star');
         $available_colors = Inventory::where('product_id',$product_id)
         ->groupBy('color_id')
         ->selectRaw('sum(color_id) as sum , color_id')
@@ -51,6 +58,8 @@ class FrontendController extends Controller
             'gal_img'=>$gal_img,
             'available_colors'=>$available_colors,
             'available_sizes'=>$available_sizes,
+            'reviews'=>$reviews,
+            'total_star'=>$total_star,
         ]);
     }
 
@@ -93,5 +102,19 @@ class FrontendController extends Controller
         }
 
         echo $str;
+    }
+
+    function review_store(Request $request){
+        $request->validate([
+            'stars'=>'required',
+            'review'=>'required',
+        ]);
+
+        OrderProduct::where('customer_id' , Auth::guard('customer')->id())->where('product_id' , $request->product_id)->first()->update([
+            'star'=>$request->stars,
+            'review'=>$request->review,
+            'updated_at'=>Carbon::now(),
+        ]);
+        return back();
     }
 }

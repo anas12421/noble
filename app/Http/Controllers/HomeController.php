@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 
 class HomeController extends Controller
 {
@@ -42,12 +43,25 @@ class HomeController extends Controller
             return back()->with('match','Password & confirm password dose not match !');
         }
 
-        User::insert([
-            'name'=>$request->name,
-            'email'=>$request->email,
+        // User::insert([
+        //     'name'=>$request->name,
+        //     'email'=>$request->email,
+        //     'password'=>bcrypt($request->password),
+        //     'role'=>$request->role,
+        //     'created_at'=>Carbon::now(),
+        //     'email_verified_at'=>Carbon::now(),
+        // ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
             'password'=>bcrypt($request->password),
             'role'=>$request->role,
+            'created_at'=>Carbon::now(),
+            'email_verified_at'=>Carbon::now(),
         ]);
+
+        event(new Registered($user));
         return back()->with('success', 'User add success');
     }
 
@@ -60,4 +74,6 @@ class HomeController extends Controller
         ]);
         return back();
     }
+
+    
 }
