@@ -201,7 +201,7 @@ Route::get('/view/cart',[CartController::class ,'view_cart'])->name('view.cart')
 Route::post('/view/cart/update',[CartController::class ,'view_cart_update'])->name('view.cart.update');
 
 // Wishlist
-Route::get('/wish',[WishController::class ,'wish'])->name('wish');
+Route::get('/wish',[WishController::class ,'wish'])->middleware('customerverified')->name('wish'); //Middleware use heer
 Route::get('/wish/remove/{id}',[WishController::class ,'wish_remove'])->name('wish.remove');
 
 // Coupon
@@ -267,3 +267,6 @@ Route::get('/forget', [PassresetController::class , 'forget'])->name('forget');
 Route::post('/pass/reset/request', [PassresetController::class , 'pass_reset_request'])->name('pass.reset.request');
 Route::get('/pass/reset/form/{token}', [PassresetController::class , 'pass_reset_form'])->name('pass.reset.form');
 Route::post('/pass/reset/confirm/{token}', [PassresetController::class , 'pass_reset_confirm'])->name('pass.reset.confirm');
+
+// Shop
+Route::get('/shop', [FrontendController::class , 'shop'])->name('shop');

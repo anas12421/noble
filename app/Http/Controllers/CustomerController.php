@@ -19,7 +19,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class CustomerController extends Controller
+
 {
+
+    public function __construct()
+    {
+        $this->middleware('customerverified'); // use middlware
+    }
+
     function customer_profile(){
         return view('front.customer.profile');
     }

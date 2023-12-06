@@ -26,7 +26,8 @@
 
                     @foreach ($products as $key=>$product )
                     <tr>
-                        <td>{{$key+1}}</td>
+                        <td>{{$products->firstitem()+$key}}</td> {{-- laravel paginate--}}
+                        {{-- <td>{{$key+1}}</td> --}}
                         <td>
 
                            @foreach ($categories as $category)
@@ -50,7 +51,7 @@
                         <td>{{$product->product_name}}</td>
                         <td>{{$product->price}}</td>
                         <td>
-                            {{ ($product->discount == null) ? 'No Discount' : $product->discount.'%' }} 
+                            {{ ($product->discount == null) ? 'No Discount' : $product->discount.'%' }}
                         </td>
                         <td>{{$product->after_discount}}</td>
 
@@ -77,7 +78,12 @@
                     </tr>
 
                     @endforeach
+
                 </table>
+                <div> {{$products->links('vendor.pagination.custom' , [
+                    'products'=>$products,
+                ])}}</div>
+                {{-- {{ $products->links()}} --}}
             </div>
         </div>
     </div>

@@ -91,7 +91,9 @@ class ProductController extends Controller
    }
 
    function product_list(){
-    $products = Product::all();
+    // $products = Product::simplePaginate(5); //paginate with  arrow
+    $products = Product::paginate(5);  //paginate with number and arrow
+    // $products = Product::all();
     $categories = Category::all();
     $subcategories = Subcategory::all();
     $brands = Brand::all();

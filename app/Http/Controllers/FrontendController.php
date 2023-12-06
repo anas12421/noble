@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use App\Models\Category;
+use App\Models\Color;
 use App\Models\footer1;
 use App\Models\Inventory;
 use App\Models\Offer1;
@@ -11,6 +12,7 @@ use App\Models\Offer2;
 use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductGallery;
+use App\Models\Size;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -116,5 +118,41 @@ class FrontendController extends Controller
             'updated_at'=>Carbon::now(),
         ]);
         return back();
+    }
+
+    function shop(Request $request){
+
+        // product search
+        $data = $request->all();
+        $product = Product::where(function($q) use ($data){
+            if(!empty($data['search_input']) && $data['search_input'] != '' && $data['search_input'] != 'unbdefined'){
+                $q->where(function ($q) use ($data){
+                    $q->where('product_name', 'like', '%'.$data['search_input'].'%');
+                    $q->orwhere('long_desp', 'like', '%'.$data['search_input'].'%');
+                    $q->orwhere('addi_desp', 'like', '%'.$data['search_input'].'%');
+                    $q->orwhere('short_desp', 'like', '%'.$data['search_input'].'%');
+                });
+            }
+
+
+            if(!empty($data['category_id']) && $data['category_id'] != '' && $data['category_id'] != 'unbdefined'){
+                $q->where(function ($q) use ($data){
+                    $q->where('category_id', $data['category_id']);
+
+                });
+            }
+        })->get();
+
+
+
+        $categories = Category::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        return view('front.shop.shop' , [
+            'product'=>$product,
+            'sizes'=>$sizes,
+            'colors'=>$colors,
+            'categories'=>$categories,
+        ]);
     }
 }

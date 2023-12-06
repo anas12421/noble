@@ -21,7 +21,9 @@
     <link href="{{ asset('frontend_assets') }}/css/swiper.min.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/owl.transitions.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="{{ asset('frontend_assets') }}/css/jquery.fancybox.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/odometer-theme-default.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/sass/style.css" rel="stylesheet">
@@ -103,7 +105,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <form action="#" class="middle-box">
+                            <div  class="middle-box">
                                 <div class="category">
                                     <select name="service" class="form-control">
                                         <option disabled="disabled" selected="">All Category</option>
@@ -115,13 +117,13 @@
                                 </div>
                                 <div class="search-box">
                                     <div class="input-group">
-                                        <input type="search" class="form-control"
+                                        <input type="search" id="search_input" class="form-control"
                                             placeholder="What are you looking for?">
                                         <button class="search-btn" type="submit"> <i class="fi flaticon-search"></i>
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="col-lg-4 col-12">
                             <div class="middle-right">
@@ -131,52 +133,56 @@
                                     </li>
                                     <li>
                                         @auth('customer')
-                                        <a href="{{route('customer.profile')}}"><i
-                                            class="fi flaticon-user-profile"></i><span class="fs-6">{{Auth::guard('customer')->user()->fname.' '.Auth::guard('customer')->user()->lname}}</span>
-                                        </a>
+                                            <a href="{{ route('customer.profile') }}"><i
+                                                    class="fi flaticon-user-profile"></i><span
+                                                    class="fs-6">{{ Auth::guard('customer')->user()->fname . ' ' . Auth::guard('customer')->user()->lname }}</span>
+                                            </a>
                                         @else
-                                        <a href="{{route('customer.login')}}"><i
-                                            class="fi flaticon-user-profile"></i><span>Login</span>
-                                        </a>
+                                            <a href="{{ route('customer.login') }}"><i
+                                                    class="fi flaticon-user-profile"></i><span>Login</span>
+                                            </a>
                                         @endauth
                                     </li>
                                     <li>
                                         <div class="header-wishlist-form-wrapper">
                                             <button class="wishlist-toggle-btn"> <i class="fi flaticon-heart"></i>
-                                                <span class="cart-count">{{App\Models\Wish::where('customer_id',Auth::guard('customer')->id())->count()}}</span></button>
+                                                <span
+                                                    class="cart-count">{{ App\Models\Wish::where('customer_id', Auth::guard('customer')->id())->count() }}</span></button>
                                             <div class="mini-wislist-content">
                                                 <button class="mini-cart-close"><i class="ti-close"></i></button>
                                                 <div class="mini-cart-items">
 
 
-                                                    @foreach (App\Models\Wish::where('customer_id', Auth::guard('customer')->id())->get() as $wish )
-
-                                                    <div class="mini-cart-item clearfix">
-                                                        <div class="mini-cart-item-image">
-                                                            <a href="product.html"><img
-                                                                    src="{{ asset('uploads/product/preview')}}/{{$wish->rel_to_product->preview}}"
-                                                                    alt></a>
+                                                    @foreach (App\Models\Wish::where('customer_id', Auth::guard('customer')->id())->get() as $wish)
+                                                        <div class="mini-cart-item clearfix">
+                                                            <div class="mini-cart-item-image">
+                                                                <a href="product.html"><img
+                                                                        src="{{ asset('uploads/product/preview') }}/{{ $wish->rel_to_product->preview }}"
+                                                                        alt></a>
+                                                            </div>
+                                                            <div class="mini-cart-item-des">
+                                                                <a
+                                                                    href="product.html">{{ $wish->rel_to_product->product_name }}</a>
+                                                                <span
+                                                                    class="mini-cart-item-price">&#2547;{{ $wish->rel_to_product->after_discount }}</span>
+                                                                <span class="mini-cart-item-quantity"><a
+                                                                        href="{{ route('wish.remove', $wish->id) }}"><i
+                                                                            class="ti-close"></i></a></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="mini-cart-item-des">
-                                                            <a href="product.html">{{$wish->rel_to_product->product_name}}</a>
-                                                            <span class="mini-cart-item-price">&#2547;{{$wish->rel_to_product->after_discount}}</span>
-                                                            <span class="mini-cart-item-quantity"><a href="{{route('wish.remove' ,$wish->id)}}"><i
-                                                                        class="ti-close"></i></a></span>
-                                                        </div>
-                                                    </div>
                                                     @endforeach
 
                                                 </div>
                                                 <div class="mini-cart-action clearfix">
                                                     <div class="mini-btn">
-                                                       @auth('customer')
-                                                       <a href="{{route('wish')}}" class="view-cart-btn">View
-                                                        Wishlist</a>
-
+                                                        @auth('customer')
+                                                            <a href="{{ route('wish') }}" class="view-cart-btn">View
+                                                                Wishlist</a>
                                                         @else
-                                                        <a href="{{route('customer.login')}}" class="view-cart-btn">View
-                                                            Wishlist</a>
-                                                       @endauth
+                                                            <a href="{{ route('customer.login') }}"
+                                                                class="view-cart-btn">View
+                                                                Wishlist</a>
+                                                        @endauth
                                                     </div>
                                                 </div>
                                             </div>
@@ -185,39 +191,44 @@
                                     <li>
                                         <div class="mini-cart">
                                             <button class="cart-toggle-btn"> <i class="fi flaticon-add-to-cart"></i>
-                                                <span class="cart-count">{{App\Models\Cart::where('customer_id',Auth::guard('customer')->id())->count()}}</span></button>
+                                                <span
+                                                    class="cart-count">{{ App\Models\Cart::where('customer_id', Auth::guard('customer')->id())->count() }}</span></button>
                                             <div class="mini-cart-content">
                                                 <button class="mini-cart-close"><i class="ti-close"></i></button>
                                                 <div class="mini-cart-items">
 
 
                                                     @php
-                                                    $sub = 0;
+                                                        $sub = 0;
 
                                                     @endphp
-                                                    @foreach (App\Models\Cart::where('customer_id',Auth::guard('customer')->id())->get() as $cart)
+                                                    @foreach (App\Models\Cart::where('customer_id', Auth::guard('customer')->id())->get() as $cart)
+                                                        <div class="mini-cart-item clearfix">
+                                                            <div class="mini-cart-item-image">
+                                                                <a href="product.html"><img
+                                                                        src="{{ asset('uploads/product/preview') }}/{{ $cart->rel_to_product->preview }}"
+                                                                        alt></a>
+                                                            </div>
+                                                            <div class="mini-cart-item-des">
+                                                                <a
+                                                                    href="product.html">{{ $cart->rel_to_product->product_name }}</a>
+                                                                <span
+                                                                    class="mini-cart-item-price">&#2547;{{ $cart->rel_to_product->after_discount }}
+                                                                    x {{ $cart->quantity }}
+                                                                    &nbsp;=&nbsp;&nbsp;&#2547;{{ $cart->rel_to_product->after_discount * $cart->quantity }}</span>
 
-                                                    <div class="mini-cart-item clearfix">
-                                                        <div class="mini-cart-item-image">
-                                                            <a href="product.html"><img
-                                                                    src="{{ asset('uploads/product/preview') }}/{{$cart->rel_to_product->preview}}"
-                                                                    alt></a>
+
+                                                                <span class="mini-cart-item-quantity"><a
+                                                                        href="{{ route('cart.remove', $cart->id) }}"><i
+                                                                            class="ti-close"></i></a></span>
+                                                            </div>
+                                                            <input type="hidden" name="product_id"
+                                                                value="{{ $cart->rel_to_product->id }}">
                                                         </div>
-                                                        <div class="mini-cart-item-des">
-                                                            <a href="product.html">{{$cart->rel_to_product->product_name}}</a>
-                                                            <span class="mini-cart-item-price">&#2547;{{$cart->rel_to_product->after_discount}} x {{$cart->quantity}} &nbsp;=&nbsp;&nbsp;&#2547;{{$cart->rel_to_product->after_discount*$cart->quantity}}</span>
+                                                        @php
+                                                            $sub += $cart->rel_to_product->after_discount * $cart->quantity;
 
-
-                                                            <span class="mini-cart-item-quantity"><a href="{{route('cart.remove' ,
-                                                            $cart->id)}}"><i
-                                                                        class="ti-close"></i></a></span>
-                                                        </div>
-                                                        <input type="hidden" name="product_id" value="{{$cart->rel_to_product->id}}">
-                                                    </div>
-                                                    @php
-                                                    $sub += $cart->rel_to_product->after_discount*$cart->quantity ;
-
-                                                    @endphp
+                                                        @endphp
                                                     @endforeach
 
 
@@ -236,13 +247,14 @@
 
                                                 <div class="mini-cart-action clearfix">
                                                     <span class="mini-checkout-price">Subtotal:
-                                                        <span>&#2547;{{$sub}}</span></span>
+                                                        <span>&#2547;{{ $sub }}</span></span>
                                                     <div class="mini-btn">
                                                         @auth('customer')
-                                                        <a href="{{route('view.cart')}}" class="view-cart-btn">View Cart</a>
-
+                                                            <a href="{{ route('view.cart') }}" class="view-cart-btn">View
+                                                                Cart</a>
                                                         @else
-                                                        <a href="{{route('customer.login')}}" class="view-cart-btn">View Cart</a>
+                                                            <a href="{{ route('customer.login') }}"
+                                                                class="view-cart-btn">View Cart</a>
                                                         @endauth
                                                     </div>
                                                 </div>
@@ -308,24 +320,28 @@
                                     <button class="menu-close"><i class="ti-close"></i></button>
                                     <ul class="nav navbar-nav mb-2 mb-lg-0">
 
-                                        @foreach (App\Models\Menu::all() as $menu)
+                                        {{-- @foreach (App\Models\Menu::all() as $menu)
 
                                         <li class="menu-item-has-children">
-                                            {{-- in href {{$menu->menu_link}} --}}
+
                                             <a href="{{route('home')}}">{{$menu->menu_name}}</a>
                                         </li>
-                                        @endforeach
+                                        @endforeach --}}
+                                        <li class="menu-item-has-children">
 
-                                        {{-- <li>
-                                            <a href="about.html">About</a>
+                                            <a href="{{ route('home') }}">Home</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="{{ route('home') }}">About</a>
                                         </li>
                                         <li class="menu-item-has-children">
-                                            <a href="#">Shop</a>
+                                            <a href="{{ route('shop') }}">Shop</a>
                                         </li>
                                         <li class="menu-item-has-children">
-                                            <a href="#">FAQ</a>
+                                            <a href="{{ route('home') }}">FAQ</a>
                                         </li>
-                                        <li><a href="contact.html">Contact</a></li> --}}
+                                        <li><a href="{{ route('home') }}">Contact</a></li>
                                     </ul>
 
                                 </div><!-- end of nav-collapse -->
@@ -355,27 +371,28 @@
                         <div class="col col-lg-3 col-md-6 col-sm-12 col-12">
                             <div class="widget about-widget">
                                 <div class="logo widget-title">
-                                    <img src="{{ asset('uploads/footer/logo') }}/{{App\Models\footer1::first()->image}}" alt="blog">
+                                    <img src="{{ asset('uploads/footer/logo') }}/{{ App\Models\footer1::first()->image }}"
+                                        alt="blog">
                                 </div>
-                                <p>{{App\Models\footer1::first()->desp}}</p>
+                                <p>{{ App\Models\footer1::first()->desp }}</p>
                                 <ul>
                                     <li>
-                                        <a target="_blank" href="{{App\Models\footer1::first()->facebook}}">
+                                        <a target="_blank" href="{{ App\Models\footer1::first()->facebook }}">
                                             <i class="ti-facebook"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a target="_blank" href="{{App\Models\footer1::first()->twitter}}">
+                                        <a target="_blank" href="{{ App\Models\footer1::first()->twitter }}">
                                             <i class="ti-twitter-alt"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a target="_blank" href="{{App\Models\footer1::first()->linkedin}}">
+                                        <a target="_blank" href="{{ App\Models\footer1::first()->linkedin }}">
                                             <i class="ti-linkedin"></i>
                                         </a>
                                     </li>
                                     <li>
-                                        <a target="_blank" href="{{App\Models\footer1::first()->instagram}}">
+                                        <a target="_blank" href="{{ App\Models\footer1::first()->instagram }}">
                                             <i class="ti-instagram"></i>
                                         </a>
                                     </li>
@@ -390,9 +407,13 @@
                                 </div>
                                 <div class="contact-ft">
                                     <ul>
-                                        <li><i class="fi flaticon-mail"></i>{{App\Models\footer2::first()->email}}</li>
-                                        <li><i class="fi flaticon-phone"></i>{{App\Models\footer2::first()->number1}} <br>{{App\Models\footer2::first()->number2}}</li>
-                                        <li><i class="fi flaticon-pin"></i>{{App\Models\footer2::first()->address}}</li>
+                                        <li><i class="fi flaticon-mail"></i>{{ App\Models\footer2::first()->email }}
+                                        </li>
+                                        <li><i
+                                                class="fi flaticon-phone"></i>{{ App\Models\footer2::first()->number1 }}
+                                            <br>{{ App\Models\footer2::first()->number2 }}</li>
+                                        <li><i class="fi flaticon-pin"></i>{{ App\Models\footer2::first()->address }}
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -403,9 +424,8 @@
                                     <h3>Popular</h3>
                                 </div>
                                 <ul>
-                                    @foreach (App\Models\footer3::all() as $footer3 )
-
-                                    <li><a href="{{$footer3->link}}">{{$footer3->tags}}</a></li>
+                                    @foreach (App\Models\footer3::all() as $footer3)
+                                        <li><a href="{{ $footer3->link }}">{{ $footer3->tags }}</a></li>
                                     @endforeach
 
                                 </ul>
@@ -417,13 +437,13 @@
                                     <h3>Instagram</h3>
                                 </div>
                                 <ul class="d-flex">
-                                    @foreach (App\Models\footer4::all() as $footer4 )
-
-                                    <li>
-                                        <a href="#">
-                                            <img src="{{asset('uploads/footer/instagram')}}/{{$footer4->photo}}" alt="">
-                                        </a>
-                                    </li>
+                                    @foreach (App\Models\footer4::all() as $footer4)
+                                        <li>
+                                            <a href="#">
+                                                <img src="{{ asset('uploads/footer/instagram') }}/{{ $footer4->photo }}"
+                                                    alt="">
+                                            </a>
+                                        </li>
                                     @endforeach
 
                                 </ul>
@@ -436,7 +456,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col col-xs-12">
-                            <p class="copyright">{{App\Models\copyright::first()->copyright}}</p>
+                            <p class="copyright">{{ App\Models\copyright::first()->copyright }}</p>
                         </div>
                     </div>
                 </div>
