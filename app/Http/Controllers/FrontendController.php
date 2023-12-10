@@ -125,6 +125,7 @@ class FrontendController extends Controller
         // product search
         $data = $request->all();
         $product = Product::where(function($q) use ($data){
+
             if(!empty($data['search_input']) && $data['search_input'] != '' && $data['search_input'] != 'unbdefined'){
                 $q->where(function ($q) use ($data){
                     $q->where('product_name', 'like', '%'.$data['search_input'].'%');
@@ -141,6 +142,49 @@ class FrontendController extends Controller
 
                 });
             }
+
+
+
+
+            $min = 0;
+            $max = 0;
+            if (!empty($data['min']) && $data['min'] != '' && $data['min'] != 'undefined') {
+                $min = $data['min'];
+            } else {
+                $min = 1;
+            }
+
+            if(!empty($data['max']) && $data['max'] != '' && $data['max'] != 'unbdefined'){
+                $max = $data['max'];
+            }else{
+                $max = Product::max('price');
+
+            }
+
+            if (!empty($data['min']) && $data['min'] != '' && $data['min'] != 'undefined' || !empty($data['max']) && $data['max'] != '' && $data['max'] != 'undefined') {
+                $q->whereBetween('after_discount', [$min, $max]);
+            }
+
+
+
+
+            if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined' || !empty($data['size_id']) && $data['size_id'] != '' && $data['size_id'] != 'undefined') {
+                $q->whereHas('rel_to_inventory', function ($q) use ($data) {
+                    if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined') {
+                        $q->whereHas('rel_to_color', function ($q) use ($data) {
+                            $q->where('colors.id', $data['color_id']);
+                        });
+                    }
+                    if (!empty($data['size_id']) && $data['size_id'] != '' && $data['size_id'] != 'undefined') {
+                        $q->whereHas('rel_to_size', function ($q) use ($data) {
+                            $q->where('sizes.id', $data['size_id']);
+                        });
+                    }
+                });
+            }
+
+
+
         })->get();
 
 

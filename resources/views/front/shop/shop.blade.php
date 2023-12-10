@@ -29,10 +29,11 @@
                                 <div class="shop-filter-search">
                                     <form>
                                         <div>
-                                            <input id="search_input2" type="text" class="form-control" placeholder="Search..">
-                                            <button class="search_btn2" type="button"><i class="ti-search"></i></button>
+                                            <input id="search_input_two" type="text" class="form-control"
+                                                placeholder="Search..">
+                                            <button id="search_btn_two" type="submit"><i class="ti-search"></i></button>
                                         </div>
-                                    </form>
+                                        </d>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +47,8 @@
                                             <label class="topcoat-radio-button__label">
                                                 {{ $category->category_name }}
                                                 <span>({{ App\Models\Product::where('category_id', $category->id)->count() }})</span>
-                                                <input type="radio" name="category_id" value="{{ $category->id }}">
+                                                <input type="radio" name="category_id" class="category_id"
+                                                    value="{{ $category->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
                                         </li>
@@ -62,26 +64,26 @@
                                 <h2>Filter by price</h2>
                                 <div class="shopWidgetWraper">
                                     <div class="priceFilterSlider">
-                                        <form action="#" method="get" class="clearfix">
+                                        <form action="" method="GET">
                                             <!-- <div id="sliderRange"></div>
-                                                                            <div class="pfsWrap">
-                                                                                <label>Price:</label>
-                                                                                <span id="amount"></span>
-                                                                            </div> -->
+                                                                                        <div class="pfsWrap">
+                                                                                            <label>Price:</label>
+                                                                                            <span id="amount"></span>
+                                                                                        </div> -->
                                             <div class="d-flex">
                                                 <div class="col-lg-6 pe-2">
                                                     <label for="" class="form-label">Min</label>
-                                                    <input type="text" class="form-control" placeholder="Min"
-                                                        value="0">
+                                                    <input id="min" type="number" class="form-control min_price"
+                                                        placeholder="Min" value="">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label for="" class="form-label">Max</label>
-                                                    <input type="text" class="form-control" placeholder="Max"
-                                                        value="100000">
+                                                    <input id="max" type="number" class="form-control max_price"
+                                                        placeholder="Max" value="">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 mt-4">
-                                                <button class="form-control bg-light">Submit</button>
+                                                <button id="price_btn" type="submit" class="form-control bg-light">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -104,7 +106,7 @@
                                             <label class="topcoat-radio-button__label">
                                                 {{ $color->color_name }}
                                                 <span>({{ App\Models\Inventory::where('color_id', $color->id)->count() }})</span>
-                                                <input type="radio" name="color_id" value="{{ $color->id }}">
+                                                <input type="radio" class="color_id" name="color_id" value="{{ $color->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
                                         </li>
@@ -122,8 +124,8 @@
                                         <li>
                                             <label class="topcoat-radio-button__label">
                                                 {{ $size->size_name }}
-                                                <span>({{ App\Models\Inventory::where('size_id', $size->id)->count() }}))</span>
-                                                <input type="radio" name="size_id" value="{{ $size->id }}">
+                                                <span>({{ App\Models\Inventory::where('size_id', $size->id)->count() }})</span>
+                                                <input type="radio" name="size_id" class="size_id" value="{{ $size->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
                                         </li>
@@ -360,16 +362,59 @@
 
 @section('footer_script')
     <script>
-        $('.search-btn').click(function(){
-            var search_input = $('#search_input').val()
-            var category_id = $("input[type='radio'][name='category_id']:checked").val();
-            var link = "{{route('shop')}}"+"?search_input="+search_input+"&category_id="+category_id;
+        $('#search_btn').click(function() {
+            var search_input = $('#search_input').val();
+            var link = "{{ route('shop') }}" + "?search_input=" + search_input;
             window.location.href = link;
-        })
-        $('.search_btn2').click(function(){
-            var search_input = $('#search_input2').val()
-            var link = "{{route('shop')}}"+"?search_input="+search_input;
-            window.location.href = link;
-        })
+        });
+
+
+
     </script>
+
+    <script>
+        $('#search_btn_two').click(function() {
+            var search_input_two = $('#search_input_two').val();
+            var link = "{{ route('shop') }}" + "?search_input=" + search_input_two;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('.category_id').click(function() {
+            ;
+            var category_id = $('input[class="category_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?category_id=" + category_id;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+         $('.color_id').click(function() {
+            var color_id = $('input[class="color_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?color_id=" + color_id;
+            window.location.href = link;
+        });
+
+        $('.size_id').click(function() {
+            var size_id = $('input[class="size_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?size_id=" + size_id;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('#search_btn').click(function() {
+
+            var search_input = $('#search_input').val();
+            var min = $('.min_price').val();
+            var max = $('.max_price').val();
+            var link = "{{ route('shop') }}" + "?search_input=" + search_input + "&min=" + min + "&max=" + max;
+            window.location.href = link;
+        })
+
+
+    </script>
+
+
 @endsection

@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6 col-12">
-                            <div  class="middle-box">
+                            <div class="middle-box">
                                 <div class="category">
                                     <select name="service" class="form-control">
                                         <option disabled="disabled" selected="">All Category</option>
@@ -119,7 +119,7 @@
                                     <div class="input-group">
                                         <input type="search" id="search_input" class="form-control"
                                             placeholder="What are you looking for?">
-                                        <button class="search-btn" type="submit"> <i class="fi flaticon-search"></i>
+                                        <button class="search-btn" id="search_btn" type="submit"> <i class="fi flaticon-search"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -411,7 +411,8 @@
                                         </li>
                                         <li><i
                                                 class="fi flaticon-phone"></i>{{ App\Models\footer2::first()->number1 }}
-                                            <br>{{ App\Models\footer2::first()->number2 }}</li>
+                                            <br>{{ App\Models\footer2::first()->number2 }}
+                                        </li>
                                         <li><i class="fi flaticon-pin"></i>{{ App\Models\footer2::first()->address }}
                                         </li>
                                     </ul>

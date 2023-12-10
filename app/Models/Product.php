@@ -14,4 +14,7 @@ class Product extends Model
     function rel_to_cat(){
         return $this->belongsTo(Category::class,'category_id');
     }
+    function rel_to_inventory(){
+        return $this->hasMany(Inventory::class,'product_id');
+    }
 }

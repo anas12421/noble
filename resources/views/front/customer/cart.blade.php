@@ -1,8 +1,5 @@
 @extends('front.master')
 @section('content')
-
-
-
     <!-- start wpo-page-title -->
     <section class="wpo-page-title">
         <h2 class="d-none">Hide</h2>
@@ -29,14 +26,14 @@
                 <div class="col-12">
                     <div class="single-page-title">
                         <h2>Your Cart</h2>
-                        <p>There are {{$carts->count()}} products in this list</p>
+                        <p>There are {{ $carts->count() }} products in this list</p>
                     </div>
                 </div>
             </div>
             <div class="cart-wrapper">
                 <div class="row">
                     <div class="col-lg-8 col-12">
-                        <form action="{{route('view.cart.update')}}" method="POST">
+                        <form action="{{ route('view.cart.update') }}" method="POST">
                             @csrf
                             <div class="cart-item">
                                 <table class="table-responsive cart-wrap">
@@ -59,59 +56,84 @@
                                         @endphp
 
                                         @foreach ($carts as $cart)
+                                            @php
+                                                $avg = '';
 
-                                        <tr class="wishlist-item">
-                                            <td class="product-item-wish">
-                                                <div class="check-box"><input type="checkbox"
-                                                        class="myproject-checkbox">
-                                                </div>
-                                                <div class="images">
-                                                    <span>
-                                                        <img src="{{ asset('uploads/product/preview') }}/{{$cart->rel_to_product->preview}}" alt="">
-                                                    </span>
-                                                </div>
-                                                <div class="product">
+                                                $t_star = App\Models\OrderProduct::where('product_id', $cart->rel_to_product->id)
+                                                    ->whereNotNull('review')
+                                                    ->sum('star');
+                                                $t_review = App\Models\OrderProduct::where('product_id', $cart->rel_to_product->id)
+                                                    ->whereNotNull('review')
+                                                    ->get();
+
+                                                if ($t_review->count() == 0) {
+                                                    $avg = 0;
+                                                } else {
+                                                    $avg = round($t_star / $t_review->count());
+                                                }
+                                            @endphp
+
+                                            <tr class="wishlist-item">
+                                                <td class="product-item-wish">
+                                                    <div class="check-box"><input type="checkbox"
+                                                            class="myproject-checkbox">
+                                                    </div>
+                                                    <div class="images">
+                                                        <span>
+                                                            <img src="{{ asset('uploads/product/preview') }}/{{ $cart->rel_to_product->preview }}"
+                                                                alt="">
+                                                        </span>
+                                                    </div>
+                                                    <div class="product">
+                                                        <ul>
+                                                            {{-- <li class="first-cart">{{$cart->rel_to_product->id}}</li> --}}
+                                                            <li class="first-cart">{{ $cart->rel_to_product->product_name }}
+                                                            </li>
+                                                            <li>
+                                                                <div class="rating-product">
+                                                                    @for ($i = 1; $i <= $avg; $i++)
+                                                                        <i class="fa fa-star"></i>
+                                                                    @endfor
+                                                                    @for ($i = $avg; $i <= 4; $i++)
+                                                                        <i class="fa-regular fa-star"></i>
+                                                                    @endfor
+                                                                    <span>{{ App\Models\OrderProduct::where('product_id', $cart->rel_to_product->id)->whereNotNull('review')->count() }}</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td class="ptice cartmap">&#2547;{{ $cart->rel_to_product->after_discount }}
+                                                </td>
+                                                <td class="td-quantity cartmap">
+                                                    <div class="quantity">
+                                                        <input class="text-value quan" name="quantity[{{ $cart->id }}]"
+                                                            type="text" value="{{ $cart->quantity }}">
+                                                        <div data-price='{{ $cart->rel_to_product->after_discount }}'
+                                                            class="dec qtybutton">-</div>
+                                                        <div data-price='{{ $cart->rel_to_product->after_discount }}'
+                                                            class="inc qtybutton">+</div>
+                                                    </div>
+                                                </td>
+                                                <td class="ptice cartmap">&#2547;<span
+                                                        class="cartmap">{{ $cart->rel_to_product->after_discount * $cart->quantity }}</span>
+                                                </td>
+                                                <td class="action">
                                                     <ul>
-                                                        {{-- <li class="first-cart">{{$cart->rel_to_product->id}}</li> --}}
-                                                        <li class="first-cart">{{$cart->rel_to_product->product_name}}</li>
-                                                        <li>
-                                                            <div class="rating-product">
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <i class="fi flaticon-star"></i>
-                                                                <span>130</span>
-                                                            </div>
-                                                        </li>
+                                                        <li class="w-btn"><a data-bs-toggle="tooltip" data-bs-html="true"
+                                                                title="" href="{{ route('cart.remove', $cart->id) }}"
+                                                                data-bs-original-title="Remove from Cart"
+                                                                aria-label="Remove from Cart"><i
+                                                                    class="fi ti-trash"></i></a></li>
                                                     </ul>
-                                                </div>
-                                            </td>
-                                            <td class="ptice cartmap">&#2547;{{$cart->rel_to_product->after_discount}}</td>
-                                            <td class="td-quantity cartmap">
-                                                <div class="quantity">
-                                                    <input class="text-value quan" name="quantity[{{$cart->id}}]" type="text" value="{{$cart->quantity}}">
-                                                    <div data-price='{{$cart->rel_to_product->after_discount}}' class="dec qtybutton">-</div>
-                                                    <div data-price='{{$cart->rel_to_product->after_discount}}' class="inc qtybutton">+</div>
-                                                </div>
-                                            </td>
-                                            <td class="ptice cartmap">&#2547;<span class="cartmap">{{$cart->rel_to_product->after_discount*$cart->quantity}}</span></td>
-                                            <td class="action">
-                                                <ul>
-                                                    <li class="w-btn"><a data-bs-toggle="tooltip"
-                                                            data-bs-html="true" title="" href="{{route('cart.remove',$cart->id)}}"
-                                                            data-bs-original-title="Remove from Cart"
-                                                            aria-label="Remove from Cart"><i
-                                                                class="fi ti-trash"></i></a></li>
-                                                </ul>
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
 
-                                        @php
-                                            $sub += $cart->rel_to_product->after_discount*$cart->quantity;
-                                            $cat_id = array($cart->rel_to_product->category_id);
-                                            $string = implode(',',$cat_id) ;
-                                        @endphp
+                                            @php
+                                                $sub += $cart->rel_to_product->after_discount * $cart->quantity;
+                                                $cat_id = [$cart->rel_to_product->category_id];
+                                                $string = implode(',', $cat_id);
+                                            @endphp
                                         @endforeach
 
                                     </tbody>
@@ -122,30 +144,28 @@
 
                             <div class="cart-action">
 
-                                <button type="submit" class="theme-btn-s2" ><i class="fi flaticon-refresh"></i> Update Cart</button>
+                                <button type="submit" class="theme-btn-s2"><i class="fi flaticon-refresh"></i> Update
+                                    Cart</button>
                             </div>
                         </form>
                     </div>
                     <div class="col-lg-4 col-12">
 
 
-                    @php
-                     $final_discount = 0;
-                     $total = $sub;
+                        @php
+                            $final_discount = 0;
+                            $total = $sub;
 
-                     if ($type == 1) {
-                        $final_discount = round($sub*$amount/100);
-                        $total = $sub-$final_discount;
+                            if ($type == 1) {
+                                $final_discount = round(($sub * $amount) / 100);
+                                $total = $sub - $final_discount;
+                            } elseif ($type == 2) {
+                                $final_discount = $amount;
+                                $total = $sub - $final_discount;
+                            }
+                        @endphp
 
-
-                     }
-                     elseif ($type == 2) {
-                        $final_discount = $amount;
-                        $total = $sub-$final_discount;
-                     }
-                    @endphp
-
-                        <form action="{{route('view.cart')}}" method="GET">
+                        <form action="{{ route('view.cart') }}" method="GET">
 
                             <div class="apply-area mb-3">
                                 <input type="text" name="coupon" class="form-control" placeholder="Enter your coupon">
@@ -153,7 +173,7 @@
                             </div>
 
                             @if ($msg)
-                                <div class="alert alert-danger">{{$msg}}</div>
+                                <div class="alert alert-danger">{{ $msg }}</div>
                             @endif
                         </form>
 
@@ -165,26 +185,26 @@
                             <h3>Cart Totals</h3>
                             <div class="sub-total">
                                 <h4>Subtotal</h4>
-                                <span>&#2547;{{$sub}}</span>
+                                <span>&#2547;{{ $sub }}</span>
                             </div>
                             <div class="sub-total my-3">
                                 <h4>Discount</h4>
-                                <span>&#2547;{{$final_discount}}</span>
+                                <span>&#2547;{{ $final_discount }}</span>
                             </div>
                             <div class="total mb-3">
                                 <h4>Total</h4>
-                                <span>&#2547;{{$total}}</span>
+                                <span>&#2547;{{ $total }}</span>
 
-                                <input type="hidden" value="{{$coupon}}">
+                                <input type="hidden" value="{{ $coupon }}">
                             </div>
                             @php
                                 session([
-                                    'discount'=> $final_discount,
-                                    'total'=> $total,
-                                    'coupon'=> $coupon,
-                                ])
+                                    'discount' => $final_discount,
+                                    'total' => $total,
+                                    'coupon' => $coupon,
+                                ]);
                             @endphp
-                            <a class="theme-btn-s2" href="{{route('checkout')}}">Proceed To CheckOut</a>
+                            <a class="theme-btn-s2" href="{{ route('checkout') }}">Proceed To CheckOut</a>
                         </div>
                     </div>
                 </div>
@@ -197,45 +217,60 @@
 
                 @endphp --}}
                 <div class="row">
-                    {{-- @foreach (App\Models\Product::where('category_id' ,$string)->get() as $cat) --}}
+                    {{-- @foreach (App\Models\Product::where('category_id', $string)->get() as $cat) --}}
                     @foreach ($product as $cat)
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-                        <div class="product-item">
-                            <div class="image">
-                                <img style="width: 150px; height: 150px;" src="{{asset('uploads/product/preview')}}/{{$cat->preview}}" alt="">
-                                @if ($cat->discount)
+                        @php
+                            $avg = '';
 
-                                <div class="tag sale">-{{$cat->discount}}%</div>
-                                @else
-                                <div class="tag new">New</div>
-                                @endif
-                            </div>
-                            <div class="text">
-                                <h2><a href="product-single.html">{{$cat->product_name}}</a></h2>
-                                <div class="rating-product">
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <i class="fi flaticon-star"></i>
-                                    <span>130</span>
-                                </div>
-                                <div class="price">
+                            $t_star = App\Models\OrderProduct::where('product_id', $cat->id)
+                                ->whereNotNull('review')
+                                ->sum('star');
+                            $t_review = App\Models\OrderProduct::where('product_id', $cat->id)
+                                ->whereNotNull('review')
+                                ->get();
 
-
-                                    <span class="present-price">&#2547;{{$cat->after_discount}}</span>
+                            if ($t_review->count() == 0) {
+                                $avg = 0;
+                            } else {
+                                $avg = round($t_star / $t_review->count());
+                            }
+                        @endphp
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
+                            <div class="product-item">
+                                <div class="image">
+                                    <img style="width: 150px; height: 150px;"
+                                        src="{{ asset('uploads/product/preview') }}/{{ $cat->preview }}" alt="">
                                     @if ($cat->discount)
-
-                                    <del class="old-price">&#2547;{{$cat->price}}</del>
+                                        <div class="tag sale">-{{ $cat->discount }}%</div>
+                                    @else
+                                        <div class="tag new">New</div>
                                     @endif
                                 </div>
-                                <div class="shop-btn">
-                                    <a class="theme-btn-s2" href="{{route('check',$cat->slug)}}">Shop Now</a>
+                                <div class="text">
+                                    <h2><a href="product-single.html">{{ $cat->product_name }}</a></h2>
+                                    <div class="rating-product">
+                                        @for ($i = 1; $i <= $avg; $i++)
+                                            <i class="fa fa-star"></i>
+                                        @endfor
+                                        @for ($i = $avg; $i <= 4; $i++)
+                                            <i class="fa-regular fa-star"></i>
+                                        @endfor
+                                        <span>{{ App\Models\OrderProduct::where('product_id', $cat->id)->whereNotNull('review')->count() }}</span>
+                                    </div>
+                                    <div class="price">
+
+
+                                        <span class="present-price">&#2547;{{ $cat->after_discount }}</span>
+                                        @if ($cat->discount)
+                                            <del class="old-price">&#2547;{{ $cat->price }}</del>
+                                        @endif
+                                    </div>
+                                    <div class="shop-btn">
+                                        <a class="theme-btn-s2" href="{{ route('check', $cat->slug) }}">Shop Now</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
                     @endforeach
 
 
@@ -390,32 +425,32 @@
         <!-- popup-quickview -->
     </div>
 
-</div>
-<!-- end of page-wrapper -->
+    </div>
+    <!-- end of page-wrapper -->
 @endsection
 @section('footer_script')
-<script>
-    $(".inc").click(function(){
-        var td =document.getElementsByClassName('cartmap');
-        var array=Array.from(td);
-        array.map((item)=>{
-            item.addEventListener('click',function(cart){
-                if(cart.target.className == 'inc qtybutton'){
-                    var price = cart.target.dataset.price;
-                    var quantity =cart.target.parentElement.firstElementChild.value;
-                    var sub = price*quantity;
-                    var subtotal = item.nextElementSibling.innerHTML =sub;
+    <script>
+        $(".inc").click(function() {
+            var td = document.getElementsByClassName('cartmap');
+            var array = Array.from(td);
+            array.map((item) => {
+                item.addEventListener('click', function(cart) {
+                    if (cart.target.className == 'inc qtybutton') {
+                        var price = cart.target.dataset.price;
+                        var quantity = cart.target.parentElement.firstElementChild.value;
+                        var sub = price * quantity;
+                        var subtotal = item.nextElementSibling.innerHTML = sub;
 
-                }
+                    }
 
-                if(cart.target.className == 'dec qtybutton'){
-                    var price = cart.target.dataset.price;
-                    var quantity =cart.target.parentElement.firstElementChild.value;
-                    var sub = price*quantity;
-                    var subtotal = item.nextElementSibling.innerHTML =sub;
-                }
-            })
+                    if (cart.target.className == 'dec qtybutton') {
+                        var price = cart.target.dataset.price;
+                        var quantity = cart.target.parentElement.firstElementChild.value;
+                        var sub = price * quantity;
+                        var subtotal = item.nextElementSibling.innerHTML = sub;
+                    }
+                })
+            });
         });
-    });
-</script>
+    </script>
 @endsection
