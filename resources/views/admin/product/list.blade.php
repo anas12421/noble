@@ -6,6 +6,7 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>Product List</h3>
+                <h4 class="alert alert-warning">Total Items ({{$products->count()}})</h4>
                 <a href="{{route('product')}}" class="btn btn-primary"> <i data-feather="plus"></i> Add New Product</a>
             </div>
             <div class="card-body">
@@ -26,8 +27,8 @@
 
                     @foreach ($products as $key=>$product )
                     <tr>
-                        <td>{{$products->firstitem()+$key}}</td> {{-- laravel paginate--}}
-                        {{-- <td>{{$key+1}}</td> --}}
+                      {{--   <td>{{$products->firstitem()+$key}}</td> laravel paginate--}}
+                        <td>{{$key+1}}</td>
                         <td>
 
                            @foreach ($categories as $category)
@@ -80,9 +81,9 @@
                     @endforeach
 
                 </table>
-                <div> {{$products->links('vendor.pagination.custom' , [
+                {{-- <div> {{$products->links('vendor.pagination.custom' , [
                     'products'=>$products,
-                ])}}</div>
+                ])}}</div> --}}
                 {{-- {{ $products->links()}} --}}
             </div>
         </div>

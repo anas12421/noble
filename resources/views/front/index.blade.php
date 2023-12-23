@@ -174,7 +174,7 @@
                                         @endif
                                     </div>
                                     <div class="shop-btn">
-                                        <a class="theme-btn-s2" href="#">Shop Now</a>
+                                        <a class="theme-btn-s2" href="{{ route('check', $product->slug) }}">Shop Now</a>
                                     </div>
                                 </div>
                             </div>

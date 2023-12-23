@@ -1,30 +1,35 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 
 <!-- Mirrored from wpocean.com/html/tf/themart/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:28 GMT -->
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="wpOceans">
-    <link rel="shortcut icon" type="image/png" href="{{asset('frontend_assets')}}/images/favicon.png">
-    <title>Themart - eCommerce HTML5 Template</title>
-    <link href="{{asset('frontend_assets')}}/css/themify-icons.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/flaticon_ecommerce.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/animate.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/owl.carousel.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/owl.theme.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/slick.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/slick-theme.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/swiper.min.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/owl.transitions.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/jquery.fancybox.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/css/odometer-theme-default.css" rel="stylesheet">
-    <link href="{{asset('frontend_assets')}}/sass/style.css" rel="stylesheet">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('frontend_assets') }}/images/favicon.png">
+    <title>
+        @foreach (Request::segments() as $segment)
+            {{ ucwords($segment) }}
+        @endforeach
+    </title>
+    <link href="{{ asset('frontend_assets') }}/css/themify-icons.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/flaticon_ecommerce.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/animate.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/owl.carousel.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/owl.theme.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/slick.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/slick-theme.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/swiper.min.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/owl.transitions.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/jquery.fancybox.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/css/odometer-theme-default.css" rel="stylesheet">
+    <link href="{{ asset('frontend_assets') }}/sass/style.css" rel="stylesheet">
+    {{-- <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script> --}}
 </head>
 
 <body>
@@ -39,7 +44,7 @@
                     <div class="loader-line-mask">
                         <div class="loader-line"></div>
                     </div>
-                    <img src="{{asset('frontend_assets')}}/images/preloader.png" alt="">
+                    <img src="{{ asset('frontend_assets') }}/images/preloader.png" alt="">
                 </div>
             </div>
         </div>
@@ -49,21 +54,23 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <form class="wpo-accountWrapper" action="{{route('customer.logged')}}" method="POST">
+                        <form class="wpo-accountWrapper" action="{{ route('customer.logged') }}"
+                            method="POST" id="contactUSForm">
                             @csrf
 
                             <div class="wpo-accountInfo">
                                 <div class="wpo-accountInfoHeader">
-                                    <a href="index.html"><img src="{{asset('frontend_assets')}}/images/logo-2.svg" alt=""></a>
-                                    <a class="wpo-accountBtn" href="{{route('customer.register')}}">
+                                    <a href="index.html"><img src="{{ asset('frontend_assets') }}/images/logo-2.svg"
+                                            alt=""></a>
+                                    <a class="wpo-accountBtn" href="{{ route('customer.register') }}">
                                         <span class="">Create Account</span>
                                     </a>
                                 </div>
                                 <div class="image">
-                                    <img src="{{asset('frontend_assets')}}/images/login.svg" alt="">
+                                    <img src="{{ asset('frontend_assets') }}/images/login.svg" alt="">
                                 </div>
                                 <div class="back-home">
-                                    <a class="wpo-accountBtn" href="{{route('home')}}">
+                                    <a class="wpo-accountBtn" href="{{ route('home') }}">
                                         <span class="">Back To Home</span>
                                     </a>
                                 </div>
@@ -76,49 +83,58 @@
                                     <p>Sign into your pages account</p>
 
                                     @if (session('pass'))
-                                        <div class="alert alert-success">{{session('pass')}}</div>
+                                        <div class="alert alert-success">{{ session('pass') }}</div>
                                     @endif
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         @if (session('verify_email'))
                                             <div class="alert alert-warning mb-2">
-                                               <span>{{session('verify_email')}}</span>
-                                               <a href="{{route('resend.verify.email')}}">Resend Verification Link</a>
+                                                <span>{{ session('verify_email') }}</span>
+                                                <a href="{{ route('resend.verify.email') }}">Resend Verification
+                                                    Link</a>
                                             </div>
                                         @endif
                                         <label>Email</label>
-                                        <input type="text" id="email" name="email" value="{{old('email')}}" placeholder="demo@gmail.com">
+                                        <input type="text" id="email" name="email" value="{{ old('email') }}"
+                                            placeholder="demo@gmail.com">
                                         @error('email')
                                             <div class="alert alert-danger">
-                                                {{$message}}
+                                                {{ $message }}
                                             </div>
                                         @enderror
                                         @if (session('wrong'))
-                                        <div class="alert alert-danger">
-                                            {{session('wrong')}}
-                                        </div>
+                                            <div class="alert alert-danger">
+                                                {{ session('wrong') }}
+                                            </div>
                                         @endif
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input class="pwd6" type="password" placeholder="" value="{{old('password')}}"
-                                                name="password">
+                                            <input class="pwd6" type="password" placeholder=""
+                                                value="{{ old('password') }}" name="password">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default reveal6" type="button"><i
                                                         class="ti-eye"></i></button>
                                             </span>
                                         </div>
                                         @error('password')
-                                        <div class="alert alert-danger">
-                                            {{$message}}
-                                        </div>
+                                            <div class="alert alert-danger">
+                                                {{ $message }}
+                                            </div>
                                         @enderror
                                         @if (session('wrongp'))
-                                        <div class="alert alert-danger">
-                                            {{session('wrongp')}}
-                                        </div>
+                                            <div class="alert alert-danger">
+                                                {{ session('wrongp') }}
+                                            </div>
+                                        @endif
+
+
+                                        @if ($errors->has('g-recaptcha-response'))
+                                            <span
+                                                class="text-danger">{{ $errors->first('g-recaptcha-response') }}
+                                            </span>
                                         @endif
 
                                     </div>
@@ -126,7 +142,7 @@
                                         <div class="check-box-wrap">
 
                                             <div class="forget-btn">
-                                                <a href="{{route('forget')}}">Forgot Password?</a>
+                                                <a href="{{ route('forget') }}">Forgot Password?</a>
                                             </div>
                                         </div>
                                     </div>
@@ -136,14 +152,15 @@
                                 </div>
                                 <h4 class="or"><span>OR</span></h4>
                                 <ul class="wpo-socialLoginBtn">
-                                    <li><a href="{{route('google.login')}}" class="bg-danger" tabindex="0" type="button"><span><i
-                                                    class="ti-google"></i></span></a></li>
+                                    <li><a href="{{ route('google.login') }}" class="bg-danger" tabindex="0"
+                                            type="button"><span><i class="ti-google"></i></span></a></li>
                                     <li>
-                                        <a href="{{route('github.login')}}" class="bg-secondary" tabindex="0" ><span><i
-                                                    class="ti-github"></i></span></a>
+                                        <a href="{{ route('github.login') }}" class="bg-secondary"
+                                            tabindex="0"><span><i class="ti-github"></i></span></a>
                                     </li>
                                 </ul>
-                                <p class="subText">Don't have an account? <a href="{{route('customer.register')}}">Create free
+                                <p class="subText">Don't have an account? <a
+                                        href="{{ route('customer.register') }}">Create free
                                         account</a></p>
                             </div>
                         </form>
@@ -158,16 +175,31 @@
 
     <!-- All JavaScript files
     ================================================== -->
-    <script src="{{asset('frontend_assets')}}/js/jquery.min.js"></script>
-    <script src="{{asset('frontend_assets')}}/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/jquery.min.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js?render={{ env('GOOGLE_RECAPTCHA_KEY') }}"></script> --}}
     <!-- Plugins for this template -->
-    <script src="{{asset('frontend_assets')}}/js/modernizr.custom.js"></script>
-    <script src="{{asset('frontend_assets')}}/js/jquery.dlmenu.js"></script>
-    <script src="{{asset('frontend_assets')}}/js/jquery-plugin-collection.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/modernizr.custom.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/jquery.dlmenu.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
-    <script src="{{asset('frontend_assets')}}/js/script.js"></script>
+    <script src="{{ asset('frontend_assets') }}/js/script.js"></script>
+
+    {{-- <script type="text/javascript">
+        $('#contactUSForm').submit(function(event) {
+            event.preventDefault();
+
+            grecaptcha.ready(function() {
+                grecaptcha.execute("{{ env('GOOGLE_RECAPTCHA_KEY') }}", {action: 'subscribe_newsletter'}).then(function(token) {
+                    $('#contactUSForm').prepend('<input type="hidden" name="g-recaptcha-response" value="' + token + '">');
+                    $('#contactUSForm').unbind('submit').submit();
+                });;
+            });
+        });
+    </script> --}}
 </body>
 
 
 <!-- Mirrored from wpocean.com/html/tf/themart/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 15 Jun 2023 08:56:29 GMT -->
+
 </html>

@@ -29,9 +29,9 @@
                                 <div class="shop-filter-search">
                                     <form>
                                         <div>
-                                            <input id="search_input_two" type="text" class="form-control"
-                                                placeholder="Search..">
-                                            <button id="search_btn_two" type="submit"><i class="ti-search"></i></button>
+                                            <input id="search_input2" type="text" class="form-control"
+                                                placeholder="Search.." value="{{@$_GET['search_input']}}">
+                                            <button class="search_btn2" type="button"><i class="ti-search"></i></button>
                                         </div>
                                         </d>
                                 </div>
@@ -47,7 +47,7 @@
                                             <label class="topcoat-radio-button__label">
                                                 {{ $category->category_name }}
                                                 <span>({{ App\Models\Product::where('category_id', $category->id)->count() }})</span>
-                                                <input type="radio" name="category_id" class="category_id"
+                                                <input {{$category->id == @$_GET['category_id'] ? 'checked' : ''}} type="radio" name="category_id" class="category_id"
                                                     value="{{ $category->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
@@ -74,16 +74,16 @@
                                                 <div class="col-lg-6 pe-2">
                                                     <label for="" class="form-label">Min</label>
                                                     <input id="min" type="number" class="form-control min_price"
-                                                        placeholder="Min" value="">
+                                                        placeholder="Min" value="{{@$_GET['min']}}">
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label for="" class="form-label">Max</label>
                                                     <input id="max" type="number" class="form-control max_price"
-                                                        placeholder="Max" value="">
+                                                        placeholder="Max" value="{{@$_GET['max']}}">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 mt-4">
-                                                <button id="price_btn" type="submit" class="form-control bg-light">Submit</button>
+                                                <button id="price_btn" type="button" class="form-control bg-light range">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -106,7 +106,7 @@
                                             <label class="topcoat-radio-button__label">
                                                 {{ $color->color_name }}
                                                 <span>({{ App\Models\Inventory::where('color_id', $color->id)->count() }})</span>
-                                                <input type="radio" class="color_id" name="color_id" value="{{ $color->id }}">
+                                                <input {{$color->id == @$_GET['color_id'] ? 'checked' : ''}} type="radio" class="color_id" name="color_id" value="{{ $color->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
                                         </li>
@@ -125,7 +125,7 @@
                                             <label class="topcoat-radio-button__label">
                                                 {{ $size->size_name }}
                                                 <span>({{ App\Models\Inventory::where('size_id', $size->id)->count() }})</span>
-                                                <input type="radio" name="size_id" class="size_id" value="{{ $size->id }}">
+                                                <input {{$size->id == @$_GET['size_id'] ? 'checked' : ''}} type="radio" name="size_id" class="size_id" value="{{ $size->id }}">
                                                 <span class="topcoat-radio-button"></span>
                                             </label>
                                         </li>
@@ -228,18 +228,19 @@
                             <div class="shop-filter-item tag-widget">
                                 <h2>Popular Tags</h2>
                                 <ul>
-                                    <li><a href="#">Fashion</a></li>
-                                    <li><a href="#">Shoes</a></li>
-                                    <li><a href="#">Kids</a></li>
-                                    <li><a href="#">Theme</a></li>
-                                    <li><a href="#">Stylish</a></li>
-                                    <li><a href="#">Women</a></li>
-                                    <li><a href="#">Shop</a></li>
-                                    <li><a href="#">Men</a></li>
-                                    <li><a href="#">Blog</a></li>
+                                    @foreach ($tags as $tag )
+
+                                    <li><button value="{{$tag->id}}" class="tag btn btn-light my-1 {{$tag->id == @$_GET['tag'] ? 'text-danger' : ''}}">{{$tag->tag}}</button></li>
+                                    @endforeach
+
                                 </ul>
                             </div>
                         </div>
+
+
+
+
+
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -255,10 +256,10 @@
                                 <li>
                                     <select name="sort" class="sort">
                                         <option value="">Default Sorting</option>
-                                        <option value="1">Price Low To High</option>
-                                        <option value="2">Price High To Low</option>
-                                        <option value="3">Name (A-Z)</option>
-                                        <option value="4">Name (Z-A)</option>
+                                        <option {{@$_GET['sort'] == 1 ? 'selected' : ''}} value="1">Price Low To High</option>
+                                        <option {{@$_GET['sort'] == 2 ? 'selected' : ''}} value="2">Price High To Low</option>
+                                        <option {{@$_GET['sort'] == 3 ? 'selected' : ''}} value="3">Name (A-Z)</option>
+                                        <option {{@$_GET['sort'] == 4 ? 'selected' : ''}} value="4">Name (Z-A)</option>
                                     </select>
                                 </li>
                             </ul>
@@ -360,61 +361,4 @@
     <!-- product-area-end -->
 @endsection
 
-@section('footer_script')
-    <script>
-        $('#search_btn').click(function() {
-            var search_input = $('#search_input').val();
-            var link = "{{ route('shop') }}" + "?search_input=" + search_input;
-            window.location.href = link;
-        });
 
-
-
-    </script>
-
-    <script>
-        $('#search_btn_two').click(function() {
-            var search_input_two = $('#search_input_two').val();
-            var link = "{{ route('shop') }}" + "?search_input=" + search_input_two;
-            window.location.href = link;
-        });
-    </script>
-
-    <script>
-        $('.category_id').click(function() {
-            ;
-            var category_id = $('input[class="category_id"]:checked').attr('value');
-            var link = "{{ route('shop') }}" + "?category_id=" + category_id;
-            window.location.href = link;
-        });
-    </script>
-
-    <script>
-         $('.color_id').click(function() {
-            var color_id = $('input[class="color_id"]:checked').attr('value');
-            var link = "{{ route('shop') }}" + "?color_id=" + color_id;
-            window.location.href = link;
-        });
-
-        $('.size_id').click(function() {
-            var size_id = $('input[class="size_id"]:checked').attr('value');
-            var link = "{{ route('shop') }}" + "?size_id=" + size_id;
-            window.location.href = link;
-        });
-    </script>
-
-    <script>
-        $('#search_btn').click(function() {
-
-            var search_input = $('#search_input').val();
-            var min = $('.min_price').val();
-            var max = $('.max_price').val();
-            var link = "{{ route('shop') }}" + "?search_input=" + search_input + "&min=" + min + "&max=" + max;
-            window.location.href = link;
-        })
-
-
-    </script>
-
-
-@endsection

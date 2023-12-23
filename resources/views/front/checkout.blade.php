@@ -1,24 +1,7 @@
 @extends('front.master')
 
 @section('content')
-    <!-- start wpo-page-title -->
-    <section class="wpo-page-title">
-        <h2 class="d-none">Hide</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="wpo-breadcumb-wrap">
-                        <ol class="wpo-breadcumb-wrap">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="cart.html">Cart</a></li>
-                            <li>Checkout</li>
-                        </ol>
-                    </div>
-                </div>
-            </div> <!-- end row -->
-        </div> <!-- end container -->
-    </section>
-    <!-- end page-title -->
+@include('brade')
 
     <!-- wpo-checkout-area start-->
     <div class="wpo-checkout-area section-padding">

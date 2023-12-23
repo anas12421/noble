@@ -171,6 +171,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Mews\Captcha\CaptchaServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -187,6 +188,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Image' =>Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 

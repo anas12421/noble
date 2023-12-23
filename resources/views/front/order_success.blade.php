@@ -1,28 +1,7 @@
 @extends('front.master')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="wpo-page-title">
-                <h2 class="d-none">Hide</h2>
-                <div class="container">
-                <div class="row">
-                    <div class="col col-xs-12">
-                        <div class="wpo-breadcumb-wrap">
-                            <ol class="wpo-breadcumb-wrap">
-                                <li><a href="{{route('home')}}">Home</a></li>
-                                <li><a href="#">Order Success</a></li>
-                            </ol>
-                        </div>
-                    </div>
-                </div> <!-- end row -->
-                </div> <!-- end container -->
-                </div>
-        </div>
-
-    </div>
-    <!-- start wpo-page-title -->
+@include('brade')
     <!-- end page-title -->
 
     <div class="row">

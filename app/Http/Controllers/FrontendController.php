@@ -13,9 +13,12 @@ use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\ProductGallery;
 use App\Models\Size;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 class FrontendController extends Controller
 {
@@ -41,7 +44,10 @@ class FrontendController extends Controller
     }
 
 
+
+
     function check($slug){
+
         $product_id = Product::where('slug',$slug)->first()->id;
         $product_info = Product::find($product_id);
         $gal_img = ProductGallery::where('product_id',$product_id)->get();
@@ -54,6 +60,22 @@ class FrontendController extends Controller
 
         $available_sizes =Inventory::where('product_id',$product_id)->groupBy('size_id')->selectRaw('sum(size_id) as sum, size_id')->get();
 
+        // Recent View
+
+        $all = Cookie::get('recent-view');
+
+
+        // echo gettype($all);  // for check type
+        if (!$all) {
+            $all = "[]";
+        }
+        $all_info = json_decode($all, true); // string to array
+        $all_info = Arr::prepend($all_info, $product_id);
+        $recent_product_id = json_encode($all_info);
+        Cookie::queue('recent-view' , $recent_product_id , 1000);
+        // Cookie::queue('recent_view', $recent_product_id, 1000);
+
+
         // return $available_colors;
         return view('front.check',[
             'product_info'=>$product_info,
@@ -64,6 +86,11 @@ class FrontendController extends Controller
             'total_star'=>$total_star,
         ]);
     }
+
+
+
+
+
 
     function getsize(Request $request){
         $str = '';
@@ -124,6 +151,26 @@ class FrontendController extends Controller
 
         // product search
         $data = $request->all();
+
+        $sorting = 'created_at';
+        $type = 'DESC';
+
+        if (!empty($data['sort']) && $data['sort'] != '' && $data['sort'] != 'undefined') {
+            if ($data['sort'] == 1) {
+                $sorting = 'after_discount';
+                $type = 'ASC';
+            } else if ($data['sort'] == 2) {
+                $sorting = 'after_discount';
+                $type = 'DESC';
+            } else if ($data['sort'] == 3) {
+                $sorting = 'product_name';
+                $type = 'ASC';
+            } else if ($data['sort'] == 4) {
+                $sorting = 'product_name';
+                $type = 'DESC';
+            }
+        }
+
         $product = Product::where(function($q) use ($data){
 
             if(!empty($data['search_input']) && $data['search_input'] != '' && $data['search_input'] != 'unbdefined'){
@@ -140,6 +187,21 @@ class FrontendController extends Controller
                 $q->where(function ($q) use ($data){
                     $q->where('category_id', $data['category_id']);
 
+                });
+            }
+
+            if(!empty($data['tag']) && $data['tag'] != '' && $data['tag'] != 'unbdefined'){
+                $q->where(function ($q) use ($data){
+                    $all = '';
+                    foreach(Product::all() as $product){
+                        $explode = explode(',' , $product->tags) ;
+
+                        if(in_array($data['tag'] , $explode)){
+                            $all .= $product->id.',';
+                        }
+                    }
+                    $explode2 = explode(',' , $all);
+                    $q->find($explode2);
                 });
             }
 
@@ -165,9 +227,6 @@ class FrontendController extends Controller
                 $q->whereBetween('after_discount', [$min, $max]);
             }
 
-
-
-
             if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined' || !empty($data['size_id']) && $data['size_id'] != '' && $data['size_id'] != 'undefined') {
                 $q->whereHas('rel_to_inventory', function ($q) use ($data) {
                     if (!empty($data['color_id']) && $data['color_id'] != '' && $data['color_id'] != 'undefined') {
@@ -185,18 +244,38 @@ class FrontendController extends Controller
 
 
 
-        })->get();
+        })->orderBy($sorting, $type)->get();
 
 
 
         $categories = Category::all();
         $colors = Color::all();
         $sizes = Size::all();
+        $tags = Tag::all();
         return view('front.shop.shop' , [
             'product'=>$product,
             'sizes'=>$sizes,
             'colors'=>$colors,
             'categories'=>$categories,
+            'tags'=>$tags,
         ]);
+    }
+
+
+    function recent_view(){
+        // $product_ids =  Cookie::get('recent-view');
+
+
+        $recent_info = json_decode(Cookie::get('recent-view'), true);
+
+        if ($recent_info == NULL) {
+            $recent_info = [];
+            $after_unique = array_unique($recent_info); // exists check
+        } else {
+            $after_unique = array_reverse(array_unique($recent_info));
+        }
+        $recents = Product::find($after_unique);
+        // $recents = Product::find($product_ids);
+        return view('front.recent_view.recent_view', compact('recents'));
     }
 }

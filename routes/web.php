@@ -27,6 +27,7 @@ use App\Http\Controllers\VariationController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\StripePaymentController;
+use App\Http\Controllers\TagController;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 
@@ -44,9 +45,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[FrontendController::class, 'index'])->name('home');
 Route::get('/dashboard',[HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dash');
 // Route::get('/product/details',[FrontendController::class, 'product_details'])->name('product.details');
-Route::get('/check/{slug}',[FrontendController::class, 'check'])->name('check');
+Route::get('/product/details/{slug}',[FrontendController::class, 'check'])->name('check');
 Route::post('/getsize',[FrontendController::class, 'getsize']);
 Route::post('/getquantity',[FrontendController::class, 'getquantity']);
+Route::get('/recent/view',[FrontendController::class, 'recent_view'])->name('recent.view');
 
 
 
@@ -180,6 +182,7 @@ Route::get('/customer/login',[CustomerAuthController::class ,'customer_login'])-
 Route::get('/customer/register',[CustomerAuthController::class ,'customer_register'])->name('customer.register');
 Route::post('/customer/store',[CustomerAuthController::class ,'customer_store'])->name('customer.store');
 Route::post('/customer/logged/in',[CustomerAuthController::class ,'customer_logged'])->name('customer.logged');
+Route::get('/reload-captcha', [CustomerAuthController::class, 'reloadCaptcha']);
 
 
 Route::get('/customer/list',[CustomerController::class ,'customer_list'])->name('customer.list');
@@ -203,6 +206,13 @@ Route::post('/view/cart/update',[CartController::class ,'view_cart_update'])->na
 // Wishlist
 Route::get('/wish',[WishController::class ,'wish'])->middleware('customerverified')->name('wish'); //Middleware use heer
 Route::get('/wish/remove/{id}',[WishController::class ,'wish_remove'])->name('wish.remove');
+
+
+// Tag
+Route::get('/tag',[TagController::class , 'tag'])->name('tag');
+Route::post('/tag/store',[TagController::class , 'tag_store'])->name('tag.store');
+Route::get('/tag/del/{id}',[TagController::class , 'tag_del'])->name('tag.del');
+
 
 // Coupon
 

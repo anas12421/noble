@@ -12,6 +12,9 @@ use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\RedirectResponse;
+use App\Rules\ReCaptcha;
+use Illuminate\View\View;
 // use Tests\Feature\Auth\EmailVerificationTest;
 
 class CustomerAuthController extends Controller
@@ -40,7 +43,11 @@ class CustomerAuthController extends Controller
             ],
             // 'password'=>'required|confirmed',
             'password_confrimation'=>'required',
+            'captcha' => 'required|captcha',
+
         ]);
+
+
 
         $customer_info = Customer::create([
             'fname'=>$request->fname,
@@ -66,6 +73,10 @@ class CustomerAuthController extends Controller
 
     }
 
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img()]);
+    }
 
 
 
@@ -73,8 +84,15 @@ class CustomerAuthController extends Controller
         $customers = Customer::all();
         return view('admin.customer.list',compact('customers'));
     }
+
+
     function customer_logged(Request $request){
 
+        // $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required',
+        //     'g-recaptcha-response' => ['required', new ReCaptcha],
+        // ]);
 
 
             if(Customer::where('email', $request->email)->exists()){
@@ -97,6 +115,7 @@ class CustomerAuthController extends Controller
 
 
     }
+
 
     function githubredirect_login(){
         return Socialite::driver('github')->redirect();

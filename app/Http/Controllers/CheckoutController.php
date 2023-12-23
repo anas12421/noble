@@ -152,6 +152,31 @@ class CheckoutController extends Controller
             ->decrement('quantity',$cart->quantity);
         }
 
+        // sms send
+        $to_tal = $request->total+$request->charge ;
+            $url = "http://bulksmsbd.net/api/smsapi";
+            $api_key = "CZuGamkCrGpTHumrDS0Z";
+            $senderid = "8809604902340";
+            $number = "$request->phone";
+            $message = "Congratulations! Your Order has been placed, Please ready amount taka- $to_tal & Your Receipt already send on $request->email. The Mart & Please receive your order from- $request->address";
+
+            $data = [
+                "api_key" => $api_key,
+                "senderid" => $senderid,
+                "number" => $number,
+                "message" => $message
+            ];
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+
+            // mail send
         Mail::to($request->email)->send(new InvoiceMail($order_id));
         return redirect()->route('order.success')->with('success',$order_id);
 

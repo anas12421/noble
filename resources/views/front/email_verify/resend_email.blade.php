@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="wpOceans">
     <link rel="shortcut icon" type="image/png" href="{{ asset('frontend_assets') }}/images/favicon.png">
-    <title>Themart - eCommerce HTML5 Template</title>
+    <title>@foreach (Request::segments() as $segment ) {{ucwords($segment)}} @endforeach</title>
     <link href="{{ asset('frontend_assets') }}/css/themify-icons.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/flaticon_ecommerce.css" rel="stylesheet">

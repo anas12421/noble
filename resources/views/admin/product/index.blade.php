@@ -100,11 +100,26 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-12">
+                            {{-- <div class="col-lg-12">
                                 <div class="form-check">
                                     <label class="form-label" for="">Tags</label>
                                     <input type="text" name="tags[]" id="input-tags" value="" />
                                 </div>
+                            </div> --}}
+
+                            <div class="col-lg-12">
+                                <select id="select-gear" name="tags[]" class="demo-default" multiple placeholder="Select Tags...">
+                                    <option value="">Select Tags...</option>
+                                    <optgroup>
+                                        @foreach ($tags as $tag )
+
+                                        <option class="text-capitalize" value="{{$tag->id}}">{{$tag->tag}}</option>
+                                        @endforeach
+
+                                    </optgroup>
+
+                                  </select>
+
                             </div>
 
                             <div class="col-lg-12">
@@ -171,16 +186,7 @@
 @endsection
 @section('footer_script')
     <script>
-        $("#input-tags").selectize({
-            delimiter: ",",
-            persist: false,
-            create: function(input) {
-                return {
-                    value: input,
-                    text: input,
-                };
-            },
-        });
+        $('#select-gear').selectize({ sortField: 'text' })
     </script>
     <script>
         $('.category').change(function() {

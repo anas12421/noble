@@ -1,24 +1,7 @@
 @extends('front.master')
 
 @section('content')
-    <!-- start wpo-page-title -->
-    <section class="wpo-page-title">
-        <h2 class="d-none">Hide</h2>
-        <div class="container">
-            <div class="row">
-                <div class="col col-xs-12">
-                    <div class="wpo-breadcumb-wrap">
-                        <ol class="wpo-breadcumb-wrap">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="product.html">Product</a></li>
-                            <li>Product Single</li>
-                        </ol>
-                    </div>
-                </div>
-            </div> <!-- end row -->
-        </div> <!-- end container -->
-    </section>
-    <!-- end page-title -->
+    @include('brade')
 
     <!-- product-single-section  start-->
     <div class="product-single-section section-padding">
@@ -184,8 +167,8 @@
                                     $after_explode = explode(',', $product_info->tags);
                                 @endphp
                                 <li><span>Tags:</span>
-                                    @foreach ($after_explode as $tags)
-                                        <a href="" class="badge bg-danger">{{ $tags }}</a>
+                                    @foreach ($after_explode as $tag)
+                                        <a href="" class="badge bg-danger text-capitalize">{{App\Models\Tag::find($tag)->tag}}</a>
                                     @endforeach
                                 </li>
                                 <li class="mt-2" id="quan"></li>

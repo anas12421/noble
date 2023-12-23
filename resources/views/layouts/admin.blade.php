@@ -7,7 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NobleUI Responsive Bootstrap 4 Dashboard Template</title>
+    {{-- <title>NobleUI Responsive Bootstrap 4 Dashboard Template</title> --}}
+    <title>
+        @foreach (Request::segments() as $segment ) {{ucwords($segment)}}  @endforeach
+    </title>
     <!-- core:css -->
     <link rel="stylesheet" href="{{ asset('backend_assets') }}/assets/vendors/core/core.css">
     <!-- endinject -->
@@ -236,6 +239,27 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('variation') }}" class="nav-link">Variation</a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#var" role="button" aria-expanded="false"
+                            aria-controls="pro">
+                            <i class="link-icon" data-feather="feather"></i>
+                            <span class="link-title">Tag</span>
+                            <i class="link-arrow" data-feather="chevron-down"></i>
+                        </a>
+                        <div class="collapse" id="var">
+                            <ul class="nav sub-menu">
+
+
+                                <li class="nav-item">
+                                    <a href="{{ route('tag') }}" class="nav-link">Tag List</a>
                                 </li>
 
 

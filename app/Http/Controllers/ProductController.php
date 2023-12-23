@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductGallery;
 use App\Models\Subcategory;
+use App\Models\Tag;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -17,9 +18,11 @@ class ProductController extends Controller
    function product(){
     $categories = Category::all();
     $brands = Brand::all();
+    $tags = Tag::all();
     return view ('admin.product.index',[
         'categories' => $categories,
         'brands' => $brands,
+        'tags' => $tags,
     ]);
    }
 
@@ -92,8 +95,8 @@ class ProductController extends Controller
 
    function product_list(){
     // $products = Product::simplePaginate(5); //paginate with  arrow
-    $products = Product::paginate(5);  //paginate with number and arrow
-    // $products = Product::all();
+    // $products = Product::paginate(5);  //paginate with number and arrow
+    $products = Product::all();
     $categories = Category::all();
     $subcategories = Subcategory::all();
     $brands = Brand::all();

@@ -8,7 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="wpOceans">
     <link rel="shortcut icon" type="image/png" href="{{ asset('frontend_assets') }}/images/favicon.png">
-    <title>Themart - eCommerce HTML5 Template</title>
+    <title>
+        The Mart |
+        @foreach (Request::segments() as $segment)
+            {{ ucwords($segment) }}
+        @endforeach
+    </title>
     <link href="{{ asset('frontend_assets') }}/css/themify-icons.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('frontend_assets') }}/css/flaticon_ecommerce.css" rel="stylesheet">
@@ -32,6 +37,22 @@
 
 
 <body>
+
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/658715fc07843602b80518e5/1hibqrpfe';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 
     <!-- start page-wrapper -->
     <div class="page-wrapper">
@@ -117,9 +138,10 @@
                                 </div>
                                 <div class="search-box">
                                     <div class="input-group">
-                                        <input type="search" id="search_input" class="form-control"
-                                            placeholder="What are you looking for?">
-                                        <button class="search-btn" id="search_btn" type="submit"> <i class="fi flaticon-search"></i>
+                                        <input value="{{ @$_GET['search_input'] }}" type="search" id="search_input"
+                                            class="form-control" placeholder="What are you looking for?">
+                                        <button class="search-btn" id="search_btn" type="submit"> <i
+                                                class="fi flaticon-search"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -348,7 +370,8 @@
                             </div>
                             <div class="col-lg-2 col-md-1 col-1">
                                 <div class="header-right">
-                                    <a href="recent-view.html" class="recent-btn"><i class="fi flaticon-refresh"></i>
+                                    <a href="{{ route('recent.view') }}" class="recent-btn"><i
+                                            class="fi flaticon-refresh"></i>
                                         <span>Recently Viewed</span>
                                     </a>
                                 </div>
@@ -509,6 +532,84 @@
     <script src="{{ asset('frontend_assets') }}/js/jquery-plugin-collection.js"></script>
     <!-- Custom script for this template -->
     <script src="{{ asset('frontend_assets') }}/js/script.js"></script>
+
+    <script>
+        $('#search_btn').click(function() {
+            var search_input = $('#search_input').val();
+            var link = "{{ route('shop') }}" + "?search_input=" + search_input;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('.search_btn2').click(function() {
+            var search_input_two = $('#search_input2').val();
+            var link = "{{ route('shop') }}" + "?search_input=" + search_input_two;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('.category_id').click(function() {
+
+            var category_id = $('input[class="category_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?category_id=" + category_id;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('.color_id').click(function() {
+            var color_id = $('input[class="color_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?color_id=" + color_id;
+            window.location.href = link;
+        });
+
+        $('.size_id').click(function() {
+            var size_id = $('input[class="size_id"]:checked').attr('value');
+            var link = "{{ route('shop') }}" + "?size_id=" + size_id;
+            window.location.href = link;
+        });
+    </script>
+
+    <script>
+        $('.range').click(function() {
+            var min = $('.min_price').val();
+            var max = $('.max_price').val();
+            var link = "{{ route('shop') }}" + "?min=" + min + "&max=" + max;
+            window.location.href = link;
+        })
+
+
+        $('.sort').change(function() {
+
+            var sort = $('.sort').val();
+            var link = "{{ route('shop') }}" + "?sort=" + sort;
+            window.location.href = link;
+        })
+
+
+        // $('#search_btn_two').click(function() {
+
+        //     var search_input = $('#search_input_two').val();
+        //     var min = $('.min_price').val();
+        //     var max = $('.max_price').val();
+        //     var sort = $('.sort').val();
+        //     var link = "{{ route('shop') }}" + "?search_input=" + search_input + "&min=" + min + "&max=" + max+ "&sort=" + sort;
+        //     window.location.href = link;
+        // })
+    </script>
+
+
+    <script>
+        $('.tag').click(function() {
+
+            var tag = $(this).val();
+            var link = "{{ route('shop') }}" + "?tag=" + tag;
+            window.location.href = link;
+        })
+    </script>
+
     @yield('footer_script')
 </body>
 
