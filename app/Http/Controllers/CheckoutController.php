@@ -67,6 +67,7 @@ class CheckoutController extends Controller
             'charge'=>$request->charge,
             'payment_method'=>$request->payment_method,
             'coupon'=>$request->coupon,
+            'order_date'=>Carbon::now()->format('Y-m=d'),
             'created_at'=>Carbon::now(),
         ]);
 

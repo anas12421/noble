@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Subscriber;
 use App\Models\User;
 use Carbon\Carbon;
@@ -14,8 +15,71 @@ use Illuminate\Auth\Events\Registered;
 class HomeController extends Controller
 {
     function dashboard(){
-        return view('dashboard');
+
+        // Orders
+        $orders = Order::where('created_at', '>',  Carbon::today()->subDays(15))->groupBy('order_date')
+        ->selectRaw('count(*) as total, order_date')
+        ->get();
+
+
+        $total_order = '' ;
+        $order_date = '' ;
+
+        foreach($orders as $order){
+            $total_order .= $order->total.',';
+            $order_date .= Carbon::parse($order->order_date)->format('M-d').',';
+        }
+
+
+        $total_order_info = explode(',' , $total_order);
+        $order_date_info = explode(',' , $order_date);
+
+        array_pop($total_order_info); // last faka array remove
+        array_pop($order_date_info); // last faka array remove
+
+
+
+        // Sales
+
+        $sales = Order::where('created_at', '>',  Carbon::today()->subDays(15))->groupBy('order_date')
+        ->selectRaw('sum(total) as sum, order_date')
+        ->get();
+
+
+        $total_sales = '' ;
+        $sales_date = '' ;
+        $target = 100000; // for percentage
+
+        foreach($sales as $sale){
+            $total_sales .= $sale->sum.','; // for taka
+            // $total_sales .= ($sale->sum/$target*100).','; // for percentage
+            $sales_date .= Carbon::parse($sale->order_date)->format('M-d').',';
+        }
+
+
+
+        $total_sales_info = explode(',' , $total_sales);
+        $sales_date_info = explode(',' , $sales_date);
+
+        array_pop($total_sales_info); // last faka array remove
+        array_pop($sales_date_info); // last faka array remove
+
+
+
+
+        return view('dashboard', compact('total_order_info' , 'order_date_info','total_sales_info' , 'sales_date_info'));
     }
+
+
+
+
+
+
+
+
+
+
+
 
     function user_list(){
         $user_info = User::where('id', '!=', Auth::id())->get();
@@ -75,5 +139,5 @@ class HomeController extends Controller
         return back();
     }
 
-    
+
 }
